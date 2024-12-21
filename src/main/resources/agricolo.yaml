@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  title: API per la gestione di prodotti agricoli
+  description: API per la gestione di prodotti agricoli, con informazioni su nome, tipo, quantità, prezzo e superficie.
+  version: 1.0.0
+
+paths:
+  /prodotti:
+    get:
+      summary: Recupera la lista di tutti i prodotti agricoli
+      responses:
+        '200':
+          description: Una lista di prodotti agricoli
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prodotto'
+
+    post:
+      summary: Crea un nuovo prodotto agricolo
+      requestBody:
+        description: Dati del nuovo prodotto agricolo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prodotto'
+      responses:
+        '201':
+          description: Prodotto agricolo creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+
+  /prodotti/{id}:
+    get:
+      summary: Recupera i dettagli di un prodotto agricolo specifico
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del prodotto agricolo
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dettagli del prodotto agricolo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+        '404':
+          description: Prodotto non trovato
+
+    put:
+      summary: Aggiorna i dettagli di un prodotto agricolo
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del prodotto agricolo
+          schema:
+            type: integer
+      requestBody:
+        description: Nuovi dati del prodotto agricolo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prodotto'
+      responses:
+        '200':
+          description: Prodotto agricolo aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+        '404':
+          description: Prodotto non trovato
+
+    delete:
+      summary: Elimina un prodotto agricolo
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del prodotto agricolo
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Prodotto agricolo eliminato con successo
+        '404':
+          description: Prodotto non trovato
+
+components:
+  schemas:
+    Prodotto:
+      type: object
+      required:
+        - nome
+        - tipo
+        - quantita
+        - prezzo
+        - superficie
+      properties:
+        nome:
+          type: string
+          description: Il nome del prodotto agricolo
+        tipo:
+          type: string
+          description: Il tipo di prodotto agricolo (ad esempio, "frutta", "verdura", "cereali")
+        quantita:
+          type: integer
+          description: La quantità disponibile del prodotto
+        prezzo:
+          type: number
+          format: float
+          description: Il prezzo per unità del prodotto agricolo
+        superficie:
+          type: number
+          format: float
+          description: La superficie in metri quadrati occupata dal prodotto (utile per coltivazioni agricole)
