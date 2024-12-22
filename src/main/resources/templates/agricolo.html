@@ -1,0 +1,30 @@
+
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodotti Agricoli</title>
+
+    <!-- Includi il file CSS -->
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+<body>
+
+<h1>Prodotti Agricoli Disponibili</h1>
+
+<!-- Contenitore dei prodotti (card) -->
+<div class="prodotti-container" id="prodotti-container">
+    <!-- I prodotti saranno popolati dinamicamente tramite Thymeleaf -->
+    <div th:each="prodotto : ${agri}" class="prodotto-card">
+        <h3 th:text="${prodotto.nome}"></h3>
+        <p><strong>Tipo:</strong> <span th:text="${prodotto.tipo}"></span></p>
+        <p><strong>Quantità:</strong> <span th:text="${prodotto.quantita}"></span></p>
+        <p><strong>Prezzo:</strong> <span th:text="${prodotto.prezzo}"></span> €</p>
+        <p><strong>Superficie:</strong> <span th:text="${prodotto.superficie}"></span> m²</p>
+    </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+
+</body>
+</html>

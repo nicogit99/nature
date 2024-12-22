@@ -1,0 +1,25 @@
+/* stile.css */
+
+/* Contenitore dei prodotti in stile griglia */
+.prodotti-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Stile per le card dei prodotti */
+.prodotto-card {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.prodotto-card h3 {
+    margin-top: 0;
+}
+
+.prodotto-card p {
+    margin: 5px 0;
+}
