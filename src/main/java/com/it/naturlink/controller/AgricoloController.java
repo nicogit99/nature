@@ -25,27 +25,35 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/dashboard")
-public class AgricoloController implements ProdottiApiDelegate {
+public class AgricoloController  {
 
     // private final AgricoloService agricoloService;
 
     @Autowired
     AgricoloServiceImpl agricoloService;
 
+    @Autowired
+    WeatherService weatherService;
+
     @GetMapping("/agricoltura")
     public ModelAndView getAllProducts() {
-        ModelAndView modelAndView = new ModelAndView("agricolo", HttpStatus.ACCEPTED);
+
+        Weather w = weatherService.generateRandom();
+        ModelAndView modelAndView = new ModelAndView("agricolo");
 
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
-        if (prodotti.getStatusCode().is2xxSuccessful()) {
-            if (prodotti.hasBody()) {
-                modelAndView.addObject("agricolo", prodotti);
-                return modelAndView;
-            }
-        }
 
-        return new ModelAndView("errore");
+        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
+            modelAndView.addObject("agri", prodotti.getBody());
+            return modelAndView;
+        } else {
+
+            modelAndView.setViewName("errore");  // Imposta una vista di errore (crea errore.html)
+            modelAndView.addObject("errore", "Impossibile ottenere i dati dei prodotti.");
+            return modelAndView;
+        }
     }
+
 
 //    @GetMapping(value = "/temp")
 //    public Weather getAgricoloList() {

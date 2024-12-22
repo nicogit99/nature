@@ -1,5 +1,6 @@
 package com.it.naturlink.service;
 
+import com.it.naturlink.db.mapper.AgricoloMapper;
 import com.it.naturlink.naturlink.api.ProdottiApiDelegate;
 import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.repository.AgricoloRepository;
@@ -10,14 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AgricoloServiceImpl implements AgricoloService, ProdottiApiDelegate {
+public class AgricoloServiceImpl implements  ProdottiApiDelegate {
 
     @Autowired
     AgricoloRepository agricoloRepository;
 
     @Override
     public ResponseEntity<List<Prodotto>> prodottiGet() {
-        return ProdottiApiDelegate.super.prodottiGet();
+        List<Prodotto> prodottoList= AgricoloMapper.INSTANCE.toProdottoList(agricoloRepository.findAll());
+        return ResponseEntity.ok().body(prodottoList);
     }
 
     @Override

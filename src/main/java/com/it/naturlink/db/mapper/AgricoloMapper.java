@@ -13,6 +13,7 @@ public interface AgricoloMapper {
     AgricoloMapper INSTANCE = Mappers.getMapper(AgricoloMapper.class);
 
     List<Agricolo> toAgricoloList(List<Prodotto> agricoloDtoList);
+    List<Prodotto> toProdottoList(List<Agricolo> agricoloDtoList);
 //
 //    Agricolo toAgricolo(AgricoloDto agricoloDto);
 //

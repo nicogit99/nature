@@ -10,7 +10,7 @@ public class WeatherService {
     private final Random random=new Random();
     
     public Weather generateRandom(){
-        return new Weather(umidita(), precipitazioni(),temperatura());
+         return new Weather(umidita(), precipitazioni(),temperatura());
     }
 
     private double umidita() {

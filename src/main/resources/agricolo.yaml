@@ -105,6 +105,9 @@ components:
         - prezzo
         - superficie
       properties:
+        id:
+          type: integer
+          description: id del prodotto
         nome:
           type: string
           description: Il nome del prodotto agricolo
