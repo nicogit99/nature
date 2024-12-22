@@ -36,6 +36,7 @@ public class LoaderDati {
 
     @PostConstruct
     public void caricamento() {
+
         loadDati();
     }
 
