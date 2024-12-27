@@ -14,8 +14,9 @@ public interface AgricoloMapper {
 
     List<Agricolo> toAgricoloList(List<Prodotto> agricoloDtoList);
     List<Prodotto> toProdottoList(List<Agricolo> agricoloDtoList);
-//
-//    Agricolo toAgricolo(AgricoloDto agricoloDto);
+
+
+   Agricolo toAgricolo(Prodotto prodotto);
 //
 //    Agricolo toAgricoloDto(Agricolo agricolo);
 }

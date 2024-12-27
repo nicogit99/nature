@@ -104,13 +104,14 @@ components:
         - quantita
         - prezzo
         - superficie
+        - giorniCrescita
       properties:
         id:
           type: integer
           description: id del prodotto
         nome:
           type: string
-          description: Il nome del prodotto agricolo
+          description: Il nome del prodotto
         tipo:
           type: string
           description: Il tipo di prodotto agricolo (ad esempio, "frutta", "verdura", "cereali")
@@ -122,6 +123,10 @@ components:
           format: float
           description: Il prezzo per unità del prodotto agricolo
         superficie:
-          type: number
-          format: float
-          description: La superficie in metri quadrati occupata dal prodotto (utile per coltivazioni agricole)
+            type: number
+            format: float
+            description: la superfice in ettari per unità del prodotto agricolo
+        giorniCrescita:
+              type: Integer
+              description: Il giorno di crescita standard
+

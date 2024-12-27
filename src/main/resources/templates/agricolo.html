@@ -1,30 +1,49 @@
-
-<html  xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prodotti Agricoli</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Includi il file CSS -->
-    <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 <body>
 
-<h1>Prodotti Agricoli Disponibili</h1>
+<!-- Contenitore per visualizzare i prodotti -->
+<div id="prodotti-container"></div>
 
-<!-- Contenitore dei prodotti (card) -->
-<div class="prodotti-container" id="prodotti-container">
-    <!-- I prodotti saranno popolati dinamicamente tramite Thymeleaf -->
-    <div th:each="prodotto : ${agri}" class="prodotto-card">
-        <h3 th:text="${prodotto.nome}"></h3>
-        <p><strong>Tipo:</strong> <span th:text="${prodotto.tipo}"></span></p>
-        <p><strong>Quantità:</strong> <span th:text="${prodotto.quantita}"></span></p>
-        <p><strong>Prezzo:</strong> <span th:text="${prodotto.prezzo}"></span> €</p>
-        <p><strong>Superficie:</strong> <span th:text="${prodotto.superficie}"></span> m²</p>
-    </div>
-</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+     // Funzione per caricare il frammento
+     function caricaProdotti() {
+         var xhr = new XMLHttpRequest();
+         xhr.open("GET", "/naturnlink/dashboard/agricoltura/fragment", true);
 
-<script th:src="@{/js/app.js}"></script>
+         // Funzione di callback per gestire la risposta
+         xhr.onreadystatechange = function() {
+             if (xhr.readyState === 4 && xhr.status === 200) {
+                 // Inserisce il contenuto ricevuto nel contenitore dei prodotti
+                 document.getElementById("prodotti-container").innerHTML = xhr.responseText;
+             }
+         };
+
+         // Gestione degli errori
+         xhr.onerror = function() {
+             console.error("Errore di rete durante la richiesta.");
+         };
+
+         // Invia la richiesta
+         xhr.send();
+     }
+
+     // Inizializza la prima chiamata per caricare i prodotti
+     caricaProdotti();
+
+     // Imposta un intervallo per aggiornare i prodotti ogni 5 secondi
+     setInterval(caricaProdotti, 6000);
+ });
+
+</script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@ package com.it.naturlink.config;
 import com.it.naturlink.Utils.Weather;
 import com.it.naturlink.db.Agricolo;
 import com.it.naturlink.repository.AgricoloRepository;
-import com.it.naturlink.service.WeatherService;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -22,22 +22,24 @@ import java.util.stream.Collectors;
 public class LoaderDati {
 
     private final AgricoloRepository agricoloRepository;
-    private final WeatherService weatherService;
-
-
-    private EntityManager entityManager;
+    private final Weather weather;
+    private final EntityManager entityManager;
 
     @Autowired
-    public LoaderDati(AgricoloRepository agricoloRepository, EntityManager entityManager, WeatherService weatherService) {
+    public LoaderDati(AgricoloRepository agricoloRepository, EntityManager entityManager, Weather weather) {
         this.agricoloRepository = agricoloRepository;
+        this.weather = weather;
         this.entityManager = entityManager;
-        this.weatherService = weatherService;
     }
 
     @PostConstruct
     public void caricamento() {
-
-        loadDati();
+        // Verifica che i dati meteo siano pronti prima di procedere con il caricamento dei dati agricoli
+        if (weather.areDatiPronti()) {
+            loadDati(); // Carica i dati agricoli solo se i dati meteo sono pronti
+        } else {
+            log.warn("I dati meteo non sono ancora pronti. Attendere...");
+        }
     }
 
     private void aggiuntaDati() {
@@ -47,63 +49,53 @@ public class LoaderDati {
     private void caricamentoValori() {
         log.info("Generazione dati random");
 
-
         // Liste di frutta, verdura e ortaggi
         List<String> frutta = Arrays.asList("pere", "mele", "banane", "arancie", "ciliegie", "pesche");
         List<String> verdura = Arrays.asList("bietole", "spinaci", "cetriolo", "cavolo", "zucchine", "verza");
         List<String> ortaggi = Arrays.asList("pomodoro", "carote", "melanzana", "peperone", "patata", "rapa");
 
         Random random = new Random();
-        Integer quantità;
-        float prezzo;
-        float superficie;
-
-
-        List<Agricolo> agricoloListFrutta = new ArrayList<>();
-        for (int i = 0; i < frutta.size(); i++) {
-            prezzo = 0.5f + random.nextFloat() * 100.5f;
-            quantità = 1 + random.nextInt(10);
-            superficie = 10 + random.nextFloat() * 90;
-            agricoloListFrutta.add(new Agricolo(frutta.get(i), "frutta", quantità, prezzo, superficie));
-
-        }
-        List<Agricolo> agricoloListVerdura = new ArrayList<>();
-        for (int i = 0; i < verdura.size(); i++) {
-            prezzo = 0.5f + random.nextFloat() * 100.5f;
-            quantità = 1 + random.nextInt(10);
-            superficie = 10 + random.nextFloat() * 90;
-            agricoloListVerdura.add(new Agricolo(verdura.get(i), "verdura", quantità, prezzo, superficie));
-
-        }
-        List<Agricolo> agricoloListOrtaggi = new ArrayList<>();
-        for (int i = 0; i < ortaggi.size(); i++) {
-            prezzo = 0.5f + random.nextFloat() * 100.5f;
-            quantità = 1 + random.nextInt(10);
-            superficie = 10 + random.nextFloat() * 90;
-            agricoloListOrtaggi.add(new Agricolo(ortaggi.get(i), "ortaggio", quantità, prezzo, superficie));
-
-        }
 
         List<Agricolo> tuttiGliAgricoli = new ArrayList<>();
-        tuttiGliAgricoli.addAll(agricoloListFrutta);
-        tuttiGliAgricoli.addAll(agricoloListVerdura);
-        tuttiGliAgricoli.addAll(agricoloListOrtaggi);
 
-
+        tuttiGliAgricoli.addAll(getLista(frutta, "frutta", random));
+        tuttiGliAgricoli.addAll(getLista(verdura, "verdura", random));
+        tuttiGliAgricoli.addAll(getLista(ortaggi, "ortaggi", random));
 
         agricoloRepository.saveAll(tuttiGliAgricoli);
 
         log.info("Dati aggiunti");
-
     }
 
+    private static List<Agricolo> getLista(List<String> elementi, String categoria, Random random) {
+        float prezzo;
+        float superficie;
+        int quantità;
+        int giorniDiCrescita;
+        List<Agricolo> agricoloList = new ArrayList<>();
+        for (int i = 0; i < elementi.size(); i++) {
+            prezzo = 0.5f + random.nextFloat() * 100.5f;
+            quantità = 1 + random.nextInt(10);
+            superficie = 10 + random.nextFloat() * 90;
+            giorniDiCrescita = 41 + random.nextInt(79);
+            agricoloList.add(new Agricolo(elementi.get(i), categoria, quantità, prezzo, superficie, giorniDiCrescita));
+        }
+        return agricoloList;
+    }
 
     @Transactional
     @Scheduled(fixedRate = 5000)
     public void loadDati() {
         log.info("Inizio reset e caricamento dati");
-        resetta();
-        aggiuntaDati();
+
+        // Se i dati meteo sono pronti, procedi con il reset e il caricamento dei dati agricoli
+        if (weather.areDatiPronti()) {
+            resetta();
+            aggiuntaDati();
+        } else {
+            log.warn("I dati meteo non sono ancora pronti per il caricamento dei dati agricoli.");
+        }
+
         log.info("Esecuzione Load dati aggiornata");
     }
 
@@ -115,11 +107,8 @@ public class LoaderDati {
         try {
             Query query = entityManager.createNativeQuery("ALTER SEQUENCE sequenza_id RESTART WITH 1");
             query.executeUpdate();
-            log.info("Sequenza resettata");
         } catch (Exception e) {
             log.error("Errore durante il reset della sequenza: " + e.getMessage());
         }
     }
-
-
 }

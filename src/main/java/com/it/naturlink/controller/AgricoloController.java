@@ -1,11 +1,13 @@
 package com.it.naturlink.controller;
 
+import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Weather;
+import com.it.naturlink.db.mapper.AgricoloMapper;
 import com.it.naturlink.naturlink.api.ProdottiApiDelegate;
 import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.service.AgricoloService;
 import com.it.naturlink.service.AgricoloServiceImpl;
-import com.it.naturlink.service.WeatherService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -22,69 +24,89 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/dashboard")
-public class AgricoloController  {
-
-    // private final AgricoloService agricoloService;
+public class AgricoloController {
 
     @Autowired
-    AgricoloServiceImpl agricoloService;
+    private AgricoloServiceImpl agricoloService;
 
     @Autowired
-    WeatherService weatherService;
+    private Weather weather;  // Reuse the same weather object
+
+    // Logging
+    private static final Logger logger = LoggerFactory.getLogger(AgricoloController.class);
 
     @GetMapping("/agricoltura")
     public ModelAndView getAllProductsPage() {
-        // Genera informazioni meteo (opzionale)
-        Weather w = weatherService.generateRandom();
+        Integer giorniCrescita;
+        float superficie;
+        double tonnellate;
 
-        // Crea ModelAndView per la pagina agricola
         ModelAndView modelAndView = new ModelAndView("agricolo");
-
-        // Recupera la lista dei prodotti tramite il servizio agricolo
+        List<Double> tonnellateList = new ArrayList<>();
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
 
-        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
-            // Aggiungi i dati al modello per Thymeleaf
-            modelAndView.addObject("agri", prodotti.getBody());
-        } else {
-            // In caso di errore nei dati
-            modelAndView.setViewName("errore");
-            modelAndView.addObject("errore", "Impossibile ottenere i dati dei prodotti.");
+        for (Prodotto p : prodotti.getBody()) {
+            superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
+            giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
+            tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
+            tonnellateList.add(tonnellate);
         }
 
+        modelAndView.addObject("tonnellateList", tonnellateList);
+        modelAndView.addObject("agri", prodotti.getBody());
+
+        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
+            return modelAndView;
+        } else {
+            logger.error("Failed to fetch products or empty response from agricoloService.");
+            modelAndView.setViewName("errore");
+            modelAndView.addObject("errore", "Impossibile ottenere i dati dei prodotti.");
+            return modelAndView;
+        }
+    }
+
+    // Endpoint to serve the fragment content
+    @GetMapping("/agricoltura/fragment")
+    public ModelAndView getAgricolturaFragment(Model model) {
+        List<Double> tonnellateList = new ArrayList<>();
+        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+
+        // Calculate tonnellate for each product and add to the list
+        for (Prodotto p : prodotti.getBody()) {
+            float superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
+            Integer giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
+            double tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
+            tonnellateList.add(tonnellate);
+        }
+
+        model.addAttribute("tonnellateList", tonnellateList);
+        model.addAttribute("prodotti", prodotti.getBody());
+
+        // Returning the fragment inside ModelAndView, render the fragment view
+        ModelAndView modelAndView = new ModelAndView("fragments"); // This will use fragments.html
         return modelAndView;
     }
 
-    // Metodo per la risposta AJAX in formato JSON
+
     @GetMapping("/agricoltura/json")
     @ResponseBody
     public ResponseEntity<List<Prodotto>> getAllProductsJson() {
-        // Recupera la lista dei prodotti tramite il servizio agricolo
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+        List<Double> tonnellateList = new ArrayList<>();
 
         if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
-            // Restituisci i dati in formato JSON per la richiesta AJAX
             return ResponseEntity.ok(prodotti.getBody());
         } else {
-            // In caso di errore, restituisci una risposta di errore (status 500)
+            logger.error("Failed to fetch products or empty response from agricoloService.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList()); // Vuoto o personalizza il messaggio
+                    .body(Collections.emptyList());
         }
     }
-
-
-//    @GetMapping(value = "/temp")
-//    public Weather getAgricoloList() {
-//         Weather w=weatherService.generateRandom();
-//        log.info(String.valueOf(w.getTemperatura()));
-//        return w;
-//    }
-
-
 }

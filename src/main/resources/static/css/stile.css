@@ -1,25 +1,85 @@
-/* stile.css */
-
-/* Contenitore dei prodotti in stile griglia */
-.prodotti-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+/* Reset degli stili di default */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Stile per le card dei prodotti */
-.prodotto-card {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    line-height: 1.6;
     padding: 20px;
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
+}
+
+#prodotti-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Card del prodotto */
+.prodotto-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.prodotto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .prodotto-card h3 {
-    margin-top: 0;
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .prodotto-card p {
-    margin: 5px 0;
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #7f8c8d;
+}
+
+.prodotto-card strong {
+    color: #34495e;
+}
+
+/* Stile per le etichette dei valori */
+.prodotto-card span {
+    font-weight: bold;
+    color: #16a085;
+}
+
+/* Stile per le informazioni finali */
+.prodotto-card .tonnellate {
+    font-size: 1.1em;
+    color: #e67e22;
+}
+
+/* Responsive: Layout per schermi piccoli */
+@media (max-width: 768px) {
+    #prodotti-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .prodotto-card {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .prodotto-card {
+        width: 100%;
+    }
 }
