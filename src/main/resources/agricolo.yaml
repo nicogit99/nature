@@ -119,12 +119,10 @@ components:
           type: integer
           description: La quantità disponibile del prodotto
         prezzo:
-          type: number
-          format: float
+          type: integer
           description: Il prezzo per unità del prodotto agricolo
         superficie:
-            type: number
-            format: float
+            type: integer
             description: la superfice in ettari per unità del prodotto agricolo
         giorniCrescita:
               type: Integer

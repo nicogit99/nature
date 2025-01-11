@@ -3,34 +3,25 @@ package com.it.naturlink.controller;
 import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Weather;
 import com.it.naturlink.db.mapper.AgricoloMapper;
-import com.it.naturlink.naturlink.api.ProdottiApiDelegate;
 import com.it.naturlink.naturlink.model.Prodotto;
-import com.it.naturlink.service.AgricoloService;
 import com.it.naturlink.service.AgricoloServiceImpl;
-
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/dashboard")
+@RequestMapping(value = "")
 public class AgricoloController {
 
     @Autowired
@@ -39,74 +30,140 @@ public class AgricoloController {
     @Autowired
     private Weather weather;  // Reuse the same weather object
 
-    // Logging
-    private static final Logger logger = LoggerFactory.getLogger(AgricoloController.class);
+    private List<Integer> GuadagnoPerProdotti;
 
-    @GetMapping("/agricoltura")
-    public ModelAndView getAllProductsPage() {
-        Integer giorniCrescita;
-        float superficie;
-        double tonnellate;
-
-        ModelAndView modelAndView = new ModelAndView("agricolo");
-        List<Double> tonnellateList = new ArrayList<>();
-        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
-
-        for (Prodotto p : prodotti.getBody()) {
-            superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
-            giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
-            tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
-            tonnellateList.add(tonnellate);
-        }
-
-        modelAndView.addObject("tonnellateList", tonnellateList);
-        modelAndView.addObject("agri", prodotti.getBody());
-
-        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
-            return modelAndView;
-        } else {
-            logger.error("Failed to fetch products or empty response from agricoloService.");
-            modelAndView.setViewName("errore");
-            modelAndView.addObject("errore", "Impossibile ottenere i dati dei prodotti.");
-            return modelAndView;
-        }
+    @GetMapping("")
+    public ModelAndView homepage() {
+        return new ModelAndView("/agricolo/agricolo");
     }
 
-    // Endpoint to serve the fragment content
-    @GetMapping("/agricoltura/fragment")
-    public ModelAndView getAgricolturaFragment(Model model) {
-        List<Double> tonnellateList = new ArrayList<>();
-        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
 
-        // Calculate tonnellate for each product and add to the list
+
+    @GetMapping("/agricoltura/datatable-framments")
+    public ResponseEntity<Map<String, Object>> getTableFragment() {
+        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int guadagnoperProdotto = 0;
+        int totaleprodotti = 0;
+
         for (Prodotto p : prodotti.getBody()) {
-            float superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
+            int superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
             Integer giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
-            double tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
+
+            int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
             tonnellateList.add(tonnellate);
+            guadagnoperProdotto = (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+//            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            tonnellateGuadagno.add(guadagnoperProdotto);
+            totaleprodotti+=(AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
         }
 
-        model.addAttribute("tonnellateList", tonnellateList);
-        model.addAttribute("prodotti", prodotti.getBody());
+        // Create response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("tonnellateGuadagno", tonnellateGuadagno);
+
+        response.put("tonnellateList", tonnellateList);
+        response.put("prodotti", prodotti.getBody());
+
+        // Return ResponseEntity with data and HTTP status
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/agricoltura/donutchart-fragments")
+    public ModelAndView getDonutFragment(Model model) {
+        // Otteniamo la lista dei prodotti
+        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+
+        // Inizializzazione delle liste e variabili
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int totaleprodotti = 0;
+
+        // Calcoliamo la produzione per ciascun prodotto
+        for (Prodotto p : prodotti.getBody()) {
+            int superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
+            Integer giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
+
+            int tonnellate = Production.calcolaProduzioneAgricola(
+                    giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie
+            );
+            tonnellateList.add(tonnellate);
+
+            // Guadagno per prodotto
+            int guadagnoperProdotto = (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            totaleprodotti += guadagnoperProdotto;
+            tonnellateGuadagno.add(guadagnoperProdotto);
+        }
+
+        // Inizializzazione delle variabili per i guadagni totali per tipo di prodotto
+        int frutta = 0;
+        int verdura = 0;
+        int ortaggi = 0;
+
+        // Classificare i guadagni in base al tipo di prodotto
+        for (int i = 0; i < tonnellateGuadagno.size(); i++) {
+            if (i <= 5) {
+                frutta += tonnellateGuadagno.get(i);
+            } else if (i > 5 && i <= 11) {
+                verdura += tonnellateGuadagno.get(i);
+            } else {
+                ortaggi += tonnellateGuadagno.get(i);
+            }
+        }
+
+        // Calcoliamo le percentuali per ciascun tipo di prodotto
+        double percentualeFrutta = (totaleprodotti > 0) ? ((double) frutta / totaleprodotti) * 100 : 0;
+        double percentualeVerdura = (totaleprodotti > 0) ? ((double) verdura / totaleprodotti) * 100 : 0;
+        double percentualeOrtaggi = (totaleprodotti > 0) ? ((double) ortaggi / totaleprodotti) * 100 : 0;
+
+        // Aggiungiamo le percentuali al modello per la visualizzazione
+        model.addAttribute("percentualeFrutta", percentualeFrutta);
+        model.addAttribute("percentualeVerdura", percentualeVerdura);
+        model.addAttribute("percentualeOrtaggi", percentualeOrtaggi);
+        model.addAttribute("totaleprodotti", totaleprodotti);
+
 
         // Returning the fragment inside ModelAndView, render the fragment view
-        ModelAndView modelAndView = new ModelAndView("fragments"); // This will use fragments.html
+        ModelAndView modelAndView = new ModelAndView("/agricolo/donutchart-fragments"); // This will use fragments.html
         return modelAndView;
     }
 
 
-    @GetMapping("/agricoltura/json")
-    @ResponseBody
-    public ResponseEntity<List<Prodotto>> getAllProductsJson() {
-        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
-        List<Double> tonnellateList = new ArrayList<>();
 
-        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
-            return ResponseEntity.ok(prodotti.getBody());
-        } else {
-            logger.error("Failed to fetch products or empty response from agricoloService.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.emptyList());
-        }
-    }
+
+
+
+//    @GetMapping("/agricoltura/json")
+//    @ResponseBody
+//    public ResponseEntity<List<Prodotto>> getAllProductsJson() {
+//        ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+//        List<Double> tonnellateList = new ArrayList<>();
+//
+//        if (prodotti.getStatusCode().is2xxSuccessful() && prodotti.hasBody()) {
+//            return ResponseEntity.ok(prodotti.getBody());
+//        } else {
+//            logger.error("Failed to fetch products or empty response from agricoloService.");
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(Collections.emptyList());
+//        }
+//    }
 }

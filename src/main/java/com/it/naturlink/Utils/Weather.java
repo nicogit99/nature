@@ -3,11 +3,14 @@ package com.it.naturlink.Utils;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -23,24 +26,25 @@ public class Weather {
 
     Random rand = new Random();
 
-    @DecimalMin("200.0")
-    @DecimalMax("800.0")
-    private double precipitazioni;
+    @Min(200)
+    @Max(800)
+    private int precipitazioni;
 
-    @DecimalMin("40.0")
-    @DecimalMax("80.0")
-    private double umidita;
+    @Min(40)
+    @Max(80)
+    private int umidita;
 
-    @DecimalMin("10.0")
-    @DecimalMax("35.0")
-    private double temperatura;
+    @Min(10)
+    @Max(35)
+    private int temperatura;
 
     private boolean datiPronti = false; // Stato che indica se i dati meteo sono pronti
 
     public Weather() {
-        setTemperatura(10 + (rand.nextDouble() * 21));  // 10 - 30 Celsius
-        setUmidita(10 + (rand.nextDouble() * 81));  // 10 - 90% umidità
-        setPrecipitazioni(101 + (rand.nextDouble() * (1000 - 101)));  // 101 - 1000 mm di precipitazioni
+        setPrecipitazioni(rand.nextInt(601) + 200);  // 200 - 800
+        setUmidita(rand.nextInt(41) + 40);  // 40 - 80
+        setTemperatura(rand.nextInt(26) + 10);  // 10 - 35
+
         this.datiPronti = true;
     }
 
@@ -49,8 +53,9 @@ public class Weather {
     }
 
     @PostConstruct
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 4000)
     public void creaDinuovo() {
-        Weather newWeather = new Weather(); // Genera nuovi dati meteo periodicamente
+        Weather newWeather = new Weather();
+        // Genera nuovi dati meteo periodicamente
     }
 }

@@ -1,28 +1,27 @@
-<!-- fragments.html -->
-<!DOCTYPE html>
-<html lang="it" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/stile.css}">
-    <title>Fragments</title>
-</head>
-<body>
-<!-- Definizione del frammento -->
-<div th:fragment="prodottiFragment(prodotti, tonnellateList)">
-    <div id="prodotti-container">
-        <div th:each="prodotto, index : ${prodotti}">
-            <div class="prodotto-card">
-                <h3 th:text="${prodotto.nome}">Nome prodotto</h3>
-                <p><strong>Tipo:</strong> <span th:text="${prodotto.tipo}">Tipo prodotto</span></p>
-                <p><strong>Quantità:</strong> <span th:text="${prodotto.quantita}">Quantità prodotto</span></p>
-                <p><strong>Prezzo:</strong> <span th:text="${prodotto.prezzo}">Prezzo prodotto</span> €</p>
-                <p><strong>Superficie:</strong> <span th:text="${prodotto.superficie}">Superficie prodotto</span> m²</p>
-                <p><strong>Giorni Crescita:</strong> <span th:text="${prodotto.giorniCrescita}">Giorni Crescita</span></p>
-                <p><strong>Tonnellate:</strong> <span th:text="${tonnellateList[index.index]}">N/A</span> t</p>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link rel="stylesheet" th:href="@{/css/stile.css}">-->
+<!--    <title>Fragments</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; Definizione del frammento &ndash;&gt;-->
+<!--<div th:fragment="prodottiFragment(prodotti, tonnellateList, tonnellateGuadagno)">-->
+<!--    <div id="prodotti-container">-->
+<!--        <div th:each="prodotto, index : ${prodotti}">-->
+<!--            <div class="prodotto-card">-->
+<!--                <h3 th:text="${prodotto.nome}">Nome prodotto</h3>-->
+<!--                <p><strong>Tipo:</strong> <span th:text="${prodotto.tipo}">Tipo prodotto</span></p>-->
+<!--                <p><strong>Prezzo:</strong> <span th:text="${prodotto.prezzo}">Prezzo prodotto</span> €</p>-->
+<!--                <p><strong>Superficie:</strong> <span th:text="${prodotto.superficie}">Superficie prodotto</span> m²</p>-->
+<!--                <p><strong>Giorni Crescita:</strong> <span th:text="${prodotto.giorniCrescita}">Giorni Crescita</span></p>-->
+<!--                <p><strong>Tonnelate:</strong> <span th:text="${tonnellateList[index.index]}">N/A</span> T</p>-->
+<!--                <p><strong>Guadagno Totale:</strong> <span th:text="${tonnellateGuadagno[index.index]}">N/A</span> €</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
