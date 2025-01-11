@@ -1,0 +1,49 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="it" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Prodotti Agricoli</title>-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Contenitore per visualizzare i prodotti &ndash;&gt;-->
+<!--<div id="prodotti-container"></div>-->
+
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--     // Funzione per caricare il frammento-->
+<!--     function caricaProdotti() {-->
+<!--         var xhr = new XMLHttpRequest();-->
+<!--         xhr.open("GET", "/naturlink/dashboard/agricoltura/fragment", true);-->
+
+<!--         // Funzione di callback per gestire la risposta-->
+<!--         xhr.onreadystatechange = function() {-->
+<!--             if (xhr.readyState === 4 && xhr.status === 200) {-->
+<!--                 // Inserisce il contenuto ricevuto nel contenitore dei prodotti-->
+<!--                 document.getElementById("prodotti-container").innerHTML = xhr.responseText;-->
+<!--             }-->
+<!--         };-->
+
+<!--         // Gestione degli errori-->
+<!--         xhr.onerror = function() {-->
+<!--             console.error("Errore di rete durante la richiesta.");-->
+<!--         };-->
+
+<!--         // Invia la richiesta-->
+<!--         xhr.send();-->
+<!--     }-->
+
+<!--     // Inizializza la prima chiamata per caricare i prodotti-->
+<!--     caricaProdotti();-->
+
+<!--     // Imposta un intervallo per aggiornare i prodotti ogni 5 secondi-->
+<!--     setInterval(caricaProdotti, 6000);-->
+<!-- });-->
+
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
