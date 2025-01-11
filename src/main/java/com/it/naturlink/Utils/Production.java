@@ -92,6 +92,41 @@ public class Production {
         return produzioneTotale; // La produzione totale in tonnellate
     }
 
+    // Metodo per calcolare la produzione dell'allevamento animale in tonnellate in un anno
+    public static double calcolaProduzioneAllevamentoAnimali(int numeroAnimali, String tipoAnimale) {
+        // Fattori di regolazione in base al tipo di animale
+        double fattoreTipoAnimale = 1.0;
+        switch (tipoAnimale.toLowerCase()) {
+            case "bovino":
+                fattoreTipoAnimale = 1.5; // Maggiore produzione per bovini (ad esempio carne e latte)
+                break;
+            case "suino":
+                fattoreTipoAnimale = 1.2; // Produzione inferiore rispetto ai bovini
+                break;
+            case "pollame":
+                fattoreTipoAnimale = 1.0; // Produzione media per pollame
+                break;
+            default:
+                fattoreTipoAnimale = 1.0; // Se non riconosciuto, consideriamo un valore di base
+                break;
+        }
+
+        // Calcoliamo la produzione per animale in base a un anno di allevamento
+        double produzionePerAnimale = 0.0;
+        if (tipoAnimale.equalsIgnoreCase("bovino")) {
+            produzionePerAnimale = 0.8;  // 0.8 tonnellate di carne per bovino in un anno
+        } else if (tipoAnimale.equalsIgnoreCase("suino")) {
+            produzionePerAnimale = 0.4;  // 0.4 tonnellate di carne per suino in un anno
+        } else if (tipoAnimale.equalsIgnoreCase("pollame")) {
+            produzionePerAnimale = 0.02;  // 0.02 tonnellate di carne per pollo in un anno
+        }
+
+        // Calcolare la produzione totale moltiplicando per il numero di animali
+        double produzioneTotale = numeroAnimali * produzionePerAnimale * fattoreTipoAnimale;
+
+        return produzioneTotale; // Produzione totale in tonnellate per un anno
+    }
+
 
     public static void main(String[] args) {
         // AGRICOLTURA
