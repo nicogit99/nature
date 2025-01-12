@@ -1,6 +1,6 @@
 package com.it.naturlink.service;
 
-import com.it.naturlink.db.mapper.AgricoloMapper;
+import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.api.ProdottiApiDelegate;
 import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.repository.AgricoloRepository;
@@ -18,7 +18,7 @@ public class AgricoloServiceImpl implements  ProdottiApiDelegate {
 
     @Override
     public ResponseEntity<List<Prodotto>> prodottiGet() {
-        List<Prodotto> prodottoList= AgricoloMapper.INSTANCE.toProdottoList(agricoloRepository.findAll());
+        List<Prodotto> prodottoList= MapperAll.INSTANCE.toProdottoList(agricoloRepository.findAll());
         return ResponseEntity.ok().body(prodottoList);
     }
 

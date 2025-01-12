@@ -1,6 +1,6 @@
 package com.it.naturlink.config;
 
-import com.it.naturlink.Utils.Weather;
+import com.it.naturlink.Utils.Tempo;
 import com.it.naturlink.db.Agricolo;
 import com.it.naturlink.repository.AgricoloRepository;
 import jakarta.annotation.PostConstruct;
@@ -23,13 +23,13 @@ import java.util.Random;
 public class LoaderDati {
 
     private final AgricoloRepository agricoloRepository;
-    private final Weather weather;
+    private final Tempo tempo;
     private final EntityManager entityManager;
 
     @Autowired
-    public LoaderDati(AgricoloRepository agricoloRepository, EntityManager entityManager, Weather weather) {
+    public LoaderDati(AgricoloRepository agricoloRepository, EntityManager entityManager, Tempo tempo) {
         this.agricoloRepository = agricoloRepository;
-        this.weather = weather;
+        this.tempo = tempo;
         this.entityManager = entityManager;
     }
 
@@ -38,7 +38,7 @@ public class LoaderDati {
     @Scheduled(fixedRate = 6000)
     public void caricamento() {
         // Verifica che i dati meteo siano pronti prima di procedere con il caricamento dei dati agricoli
-        if (weather.areDatiPronti()) {
+        if (tempo.areDatiPronti()) {
             loadDati(); // Carica i dati agricoli solo se i dati meteo sono pronti
         } else {
             log.warn("I dati meteo non sono ancora pronti. Attendere...");
@@ -46,11 +46,12 @@ public class LoaderDati {
     }
 
     private void aggiuntaDati() {
-        caricamentoValori();
+        caricaAgricolo();
     }
 
-    private void caricamentoValori() {
+    private void caricaAgricolo() {
         log.info("Generazione dati random");
+
 
         // Liste di frutta, verdura e ortaggi
         List<String> frutta = Arrays.asList("pere", "mele", "banane");
@@ -78,10 +79,9 @@ public class LoaderDati {
         List<Agricolo> agricoloList = new ArrayList<>();
         for (int i = 0; i < elementi.size(); i++) {
             prezzo = 1 + random.nextInt(4); // Random number between 0 and 10
-            quantità = 1 + random.nextInt(10);
             superficie = 1 + random.nextInt(10) ;
             giorniDiCrescita = 41 + random.nextInt(79);
-            agricoloList.add(new Agricolo(elementi.get(i), categoria, quantità, prezzo, superficie, giorniDiCrescita));
+            agricoloList.add(new Agricolo(elementi.get(i), categoria, prezzo, superficie, giorniDiCrescita));
         }
 
         return agricoloList;
@@ -91,7 +91,7 @@ public class LoaderDati {
         log.info("Inizio reset e caricamento dati");
 
         // Se i dati meteo sono pronti, procedi con il reset e il caricamento dei dati agricoli
-        if (weather.areDatiPronti()) {
+        if (tempo.areDatiPronti()) {
             resetta();
             aggiuntaDati();
         } else {

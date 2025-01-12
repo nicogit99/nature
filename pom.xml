@@ -17,9 +17,7 @@
 		<java.version>17</java.version>
 	</properties>
 
-
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -77,7 +75,6 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.6</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -86,7 +83,6 @@
 	</dependencies>
 
 	<build>
-
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -97,7 +93,6 @@
 			</resource>
 		</resources>
 
-
 		<plugins>
 			<plugin>
 				<groupId>org.openapitools</groupId>
@@ -105,7 +100,7 @@
 				<version>7.2.0</version>
 				<executions>
 					<execution>
-						<id>generate-monetization</id>
+						<id>generate-agricolo</id>
 						<goals>
 							<goal>generate</goal>
 						</goals>
@@ -122,28 +117,101 @@
 							</configOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generate-allevamento</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/allevamento.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>${project.groupId}.${project.artifactId}.api</apiPackage>
+							<modelPackage>${project.groupId}.${project.artifactId}.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<generateExamples>false</generateExamples>
+								<delegatePattern>true</delegatePattern>
+								<useSpringBoot3>true</useSpringBoot3>
+							</configOptions>
+						</configuration>
+					</execution>
+					<!-- Nuove esecuzioni per pesca.yaml, sivicoltura.yaml, minerali.yaml -->
+					<execution>
+						<id>generate-pesca</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/pesca.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>${project.groupId}.${project.artifactId}.api</apiPackage>
+							<modelPackage>${project.groupId}.${project.artifactId}.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<generateExamples>false</generateExamples>
+								<delegatePattern>true</delegatePattern>
+								<useSpringBoot3>true</useSpringBoot3>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-sivicoltura</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/sivicoltura.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>${project.groupId}.${project.artifactId}.api</apiPackage>
+							<modelPackage>${project.groupId}.${project.artifactId}.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<generateExamples>false</generateExamples>
+								<delegatePattern>true</delegatePattern>
+								<useSpringBoot3>true</useSpringBoot3>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-minerali</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/minerali.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>${project.groupId}.${project.artifactId}.api</apiPackage>
+							<modelPackage>${project.groupId}.${project.artifactId}.model</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<generateExamples>false</generateExamples>
+								<delegatePattern>true</delegatePattern>
+								<useSpringBoot3>true</useSpringBoot3>
+							</configOptions>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<excludes>
-					<exclude>
-						<groupId>org.projectlombok</groupId>
-						<artifactId>lombok</artifactId>
-					</exclude>
-				</excludes>
 
-			</configuration>
-			<executions>
-				<execution>
-					<id>build-info</id>
-					<goals>
-						<goal>build-info</goal>
-					</goals>
-				</execution>
-			</executions>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-info</id>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

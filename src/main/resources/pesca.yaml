@@ -16,7 +16,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Animale'
+                  $ref: '#/components/schemas/Pesca'
 
     post:
       summary: Crea un nuovo animale acquatico nell'allevamento
@@ -25,14 +25,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Animale'
+              $ref: '#/components/schemas/Pesca'
       responses:
         '201':
           description: Animale acquatico creato con successo
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Animale'
+                $ref: '#/components/schemas/Pesca'
 
   /pesci/{id}:
     get:
@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Animale'
+                $ref: '#/components/schemas/Pesca'
         '404':
           description: Animale non trovato
 
@@ -68,14 +68,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Animale'
+              $ref: '#/components/schemas/Pesca'
       responses:
         '200':
           description: Animale acquatico aggiornato con successo
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Animale'
+                $ref: '#/components/schemas/Pesca'
         '404':
           description: Animale non trovato
 
@@ -96,14 +96,13 @@ paths:
 
 components:
   schemas:
-    Animale:
+    Pesca:
       type: object
       required:
         - tipo
-        - stock
         - prezzo
-        - superficie
-        - ambiente
+        - stockPesce
+        - profondita
       properties:
         id:
           type: integer
@@ -114,16 +113,12 @@ components:
         tipo:
           type: string
           description: Il tipo di animale acquatico (ad esempio, "pesce", "mollusco", "crostaaceo")
-        quantita:
+        stockPesce:
           type: integer
-          description: La quantità di animali acquatici disponibili
+          description: biomassa pesce che si trobna nella zona
+        profondita:
+          type: int
+          description: profondita della pesca
         prezzo:
           type: integer
           description: Il prezzo per unità dell'animale acquatico
-        superficie:
-          type: integer
-          description: La superficie acquatica in ettari o metri quadrati dedicata all'allevamento (ad esempio, vasche, stagni, acquari)
-        ambiente:
-          type: string
-          description: Il tipo di ambiente acquatico (ad esempio, "acquario", "laguna", "vasca", "acqua salata", "acqua dolce")
-

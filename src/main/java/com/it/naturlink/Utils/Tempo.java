@@ -1,8 +1,6 @@
 package com.it.naturlink.Utils;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -22,7 +19,7 @@ import java.util.Random;
 @AllArgsConstructor
 @Component
 @Scope("singleton")
-public class Weather {
+public class Tempo {
 
     Random rand = new Random();
 
@@ -40,7 +37,7 @@ public class Weather {
 
     private boolean datiPronti = false; // Stato che indica se i dati meteo sono pronti
 
-    public Weather() {
+    public Tempo() {
         setPrecipitazioni(rand.nextInt(601) + 200);  // 200 - 800
         setUmidita(rand.nextInt(41) + 40);  // 40 - 80
         setTemperatura(rand.nextInt(26) + 10);  // 10 - 35
@@ -55,7 +52,7 @@ public class Weather {
     @PostConstruct
     @Scheduled(fixedRate = 4000)
     public void creaDinuovo() {
-        Weather newWeather = new Weather();
+        Tempo newTempo = new Tempo();
         // Genera nuovi dati meteo periodicamente
     }
 }

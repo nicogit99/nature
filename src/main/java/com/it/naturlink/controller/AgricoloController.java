@@ -1,8 +1,8 @@
 package com.it.naturlink.controller;
 
 import com.it.naturlink.Utils.Production;
-import com.it.naturlink.Utils.Weather;
-import com.it.naturlink.db.mapper.AgricoloMapper;
+import com.it.naturlink.Utils.Tempo;
+import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.service.AgricoloServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +20,30 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "")
 public class AgricoloController {
 
     @Autowired
     private AgricoloServiceImpl agricoloService;
 
     @Autowired
-    private Weather weather;  // Reuse the same weather object
+    private Tempo tempo;  // Reuse the same weather object
 
 
-    @GetMapping("")
+
+    @GetMapping("/")
     public ModelAndView homepage() {
+        return new ModelAndView("homepage");
+    }
+
+
+    @GetMapping("/agricolo")
+    public ModelAndView agricoloPage() {
         return new ModelAndView("/agricolo/agricolo");
     }
 
 
-    @GetMapping("/agricoltura/datatable-framments")
+
+    @GetMapping("agricolo/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragment() {
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
         List<Integer> tonnellateList = new ArrayList<>();
@@ -45,15 +52,15 @@ public class AgricoloController {
         int totaleprodotti = 0;
 
         for (Prodotto p : prodotti.getBody()) {
-            int superficie = AgricoloMapper.INSTANCE.toAgricolo(p).getSuperficie();
-            Integer giorniCrescita = AgricoloMapper.INSTANCE.toAgricolo(p).getGiorniCrescita();
+            int superficie = MapperAll.INSTANCE.toAgricolo(p).getSuperficie();
+            Integer giorniCrescita = MapperAll.INSTANCE.toAgricolo(p).getGiorniCrescita();
 
-            int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, weather.getTemperatura(), weather.getPrecipitazioni(), weather.getUmidita(), superficie);
+            int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie);
             tonnellateList.add(tonnellate);
-            guadagnoperProdotto = (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
 //            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
             tonnellateGuadagno.add(guadagnoperProdotto);
-            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
         }
 
         // Create response map

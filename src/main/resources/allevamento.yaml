@@ -100,7 +100,7 @@ components:
       type: object
       required:
         - tipo
-        - quantita
+        - numero
         - prezzo
       properties:
         id:
@@ -112,13 +112,8 @@ components:
         tipo:
           type: string
           description: Il tipo di animale (ad esempio, "mucca", "pecora", "pollo")
-        quantita:
-          type: integer
-          description: La quantità di animali disponibili
         prezzo:
           type: integer
           description: Il prezzo per unità dell'animale
-        superficie:
-          type: integer
-          description: La superficie in ettari utilizzata per l'allevamento degli animali
+
 

@@ -47,27 +47,27 @@ public class Production {
 
 
 
-    //AGGIUNGI ENTITA SALATO O DOLCE MARE. STOCK PESCI è LA BIOMASSA IM QUELLA ZONA
+
     // Metodo per calcolare la produzione del settore pesca in tonnellate
-    public static double calcolaProduzionePesca(double temperaturaAcqua, double profondita, double stockPesci) {
+    public static double calcolaProduzionePesca(int temperaturaAcqua, int profondita, int stockPesci) {
         // Fattori di regolazione
-        double fattoreTemperatura = (temperaturaAcqua >= 15 && temperaturaAcqua <= 25) ? 1.0 : 0.8;
-        double fattoreProfondita = (profondita >= 50 && profondita <= 200) ? 1.0 : 0.7;
+        int fattoreTemperatura = (int) ((temperaturaAcqua >= 15 && temperaturaAcqua <= 25) ? 1.0 : 0.8);
+        int fattoreProfondita = (int) ((profondita >= 50 && profondita <= 200) ? 1.0 : 0.7);
 
         // Produzione proporzionale allo stock di pesci e ai fattori
-        return stockPesci * fattoreTemperatura * fattoreProfondita / 100.0; // Conversione in tonnellate
+        return stockPesci * fattoreTemperatura * fattoreProfondita ; // Conversione in tonnellate
     }
 
     // Metodo per calcolare la produzione mineraria in tonnellate
-    public static double calcolaProduzioneMineraria(double oreLavoro, double qualitàMinerale, double profondita) {
+    public static int calcolaProduzioneMineraria(int quantità, int qualitàMinerale, int profondita) {
         // Fattore basato sulla qualità del minerale
         double fattoreQualità = qualitàMinerale / 100.0;
 
         // Fattore basato sulla profondità (ad esempio, profondità maggiori riducono l'efficienza)
         double fattoreProfondita = (profondita <= 100) ? 1.0 : (profondita <= 200) ? 0.9 : 0.8;
 
-        // Produzione proporzionale alle ore di lavoro, alla qualità e alla profondità
-        return oreLavoro * fattoreQualità * fattoreProfondita * 2.0; // Produzione di 2 tonnellate per ora ideale
+        // Produzione proporzionale alla quantità, alla qualità e alla profondità
+        return (int)(quantità * fattoreQualità * fattoreProfondita * 2.0); // Produzione di 2 tonnellate per unità di quantità ideale
     }
 
     // Metodo per calcolare la produzione del settore silvicoltura in tonnellate
@@ -92,39 +92,41 @@ public class Production {
         return produzioneTotale; // La produzione totale in tonnellate
     }
 
-    // Metodo per calcolare la produzione dell'allevamento animale in tonnellate in un anno
-    public static double calcolaProduzioneAllevamentoAnimali(int numeroAnimali, String tipoAnimale) {
+    public static int calcolaProduzioneAllevamentoAnimali(int numeroAnimali, String tipoAnimale) {
         // Fattori di regolazione in base al tipo di animale
-        double fattoreTipoAnimale = 1.0;
+        int fattoreTipoAnimale = 1; // Fattore di regolazione per la produzione (intero)
+
         switch (tipoAnimale.toLowerCase()) {
             case "bovino":
-                fattoreTipoAnimale = 1.5; // Maggiore produzione per bovini (ad esempio carne e latte)
+                fattoreTipoAnimale = 2;  // Maggiore produzione per bovini (ad esempio carne e latte)
                 break;
             case "suino":
-                fattoreTipoAnimale = 1.2; // Produzione inferiore rispetto ai bovini
+                fattoreTipoAnimale = 1;  // Produzione inferiore rispetto ai bovini
                 break;
             case "pollame":
-                fattoreTipoAnimale = 1.0; // Produzione media per pollame
+                fattoreTipoAnimale = 1;  // Produzione media per pollame
                 break;
             default:
-                fattoreTipoAnimale = 1.0; // Se non riconosciuto, consideriamo un valore di base
+                fattoreTipoAnimale = 1;  // Se non riconosciuto, consideriamo un valore di base
                 break;
         }
 
-        // Calcoliamo la produzione per animale in base a un anno di allevamento
-        double produzionePerAnimale = 0.0;
+        // Calcoliamo la produzione per animale in base a un anno di allevamento (usiamo i valori interi)
+        int produzionePerAnimale = 0;
         if (tipoAnimale.equalsIgnoreCase("bovino")) {
-            produzionePerAnimale = 0.8;  // 0.8 tonnellate di carne per bovino in un anno
+            produzionePerAnimale = 8;  // 8 quintali di carne per bovino in un anno (8 quintali = 0.8 tonnellate)
         } else if (tipoAnimale.equalsIgnoreCase("suino")) {
-            produzionePerAnimale = 0.4;  // 0.4 tonnellate di carne per suino in un anno
+            produzionePerAnimale = 4;  // 4 quintali di carne per suino in un anno (4 quintali = 0.4 tonnellate)
         } else if (tipoAnimale.equalsIgnoreCase("pollame")) {
-            produzionePerAnimale = 0.02;  // 0.02 tonnellate di carne per pollo in un anno
+            produzionePerAnimale = 2;  // 2 quintali di carne per pollo in un anno (2 quintali = 0.02 tonnellate)
         }
 
-        // Calcolare la produzione totale moltiplicando per il numero di animali
-        double produzioneTotale = numeroAnimali * produzionePerAnimale * fattoreTipoAnimale;
+        // Calcolare la produzione totale moltiplicando per il numero di animali e il fattore di regolazione
+        int produzioneTotale = numeroAnimali * produzionePerAnimale * fattoreTipoAnimale;
 
-        return produzioneTotale; // Produzione totale in tonnellate per un anno
+
+
+        return produzioneTotale; // Produzione totale in quintali (intero)
     }
 
 
@@ -142,15 +144,15 @@ public class Production {
         double temperaturaAcqua = 20; // Temperatura dell'acqua in gradi Celsius
         double profonditaPesca = 100; // Profondità in metri
         double stockPesci = 500; // Stock di pesci in tonnellate
-        double produzionePesca = calcolaProduzionePesca(temperaturaAcqua, profonditaPesca, stockPesci);
-        System.out.printf("Produzione della pesca stimata: %.2f tonnellate%n", produzionePesca);
+        //double produzionePesca = calcolaProduzionePesca(temperaturaAcqua, profonditaPesca, stockPesci);
+        //System.out.printf("Produzione della pesca stimata: %.2f tonnellate%n", produzionePesca);
 
         // MINERARIO
-        double oreLavoro = 40; // Ore di lavoro totali
+        // Ore di lavoro totali
         double qualitàMinerale = 80; // Percentuale di qualità del minerale
         double profonditaMineraria = 150; // Profondità in metri
-        double produzioneMineraria = calcolaProduzioneMineraria(oreLavoro, qualitàMinerale, profonditaMineraria);
-        System.out.printf("Produzione mineraria stimata: %.2f tonnellate%n", produzioneMineraria);
+
+
 
         // SILVICOLTURA
         double areaBoschiva = 500; // Area boschiva in ettari

@@ -2,13 +2,11 @@ package com.it.naturlink.db;
 
 import com.it.naturlink.naturlink.model.Prodotto;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.*;
-import org.mapstruct.Mapper;
-
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
@@ -18,8 +16,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Agricolo extends Prodotto {
 
-    public Agricolo(String nome, String tipo, Integer quantita, Integer prezzo, Integer superficie, Integer giorniCrescita) {
-        super(nome, tipo, quantita, prezzo, superficie, giorniCrescita);
+    public Agricolo(String nome, String tipo, Integer prezzo, Integer superficie, Integer giorniCrescita) {
+        super(nome, tipo, prezzo, superficie, giorniCrescita);
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
@@ -43,13 +41,6 @@ public class Agricolo extends Prodotto {
         return super.getTipo();
     }
 
-    @Min(1)
-    @Column(name = "quantita")
-    @Override
-    public Integer getQuantita() {
-        return super.getQuantita();
-    }
-
     @Column(name = "prezzo")
     @Override
     @Min(1) @Max(10)
@@ -59,7 +50,6 @@ public class Agricolo extends Prodotto {
 
     @Column(name = "superficie")
     @Override
-    @Min(1)
     public Integer getSuperficie() {
         return super.getSuperficie();
     }

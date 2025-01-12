@@ -101,7 +101,6 @@ components:
       required:
         - nome
         - tipo
-        - quantita
         - prezzo
         - superficie
         - giorniCrescita
@@ -115,9 +114,6 @@ components:
         tipo:
           type: string
           description: Il tipo di prodotto agricolo (ad esempio, "frutta", "verdura", "cereali")
-        quantita:
-          type: integer
-          description: La quantità disponibile del prodotto
         prezzo:
           type: integer
           description: Il prezzo per unità del prodotto agricolo

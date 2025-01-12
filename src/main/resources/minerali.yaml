@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: API per la gestione dei minerali
+  description: API per la gestione di minerali, con informazioni su nome, tipo, quantità, prezzo, origine e proprietà.
+  version: 1.0.0
+
+paths:
+  /minerali:
+    get:
+      summary: Recupera la lista di tutti i minerali
+      responses:
+        '200':
+          description: Una lista di minerali
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Minerale'
+
+    post:
+      summary: Crea un nuovo minerale
+      requestBody:
+        description: Dati del nuovo minerale
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Minerale'
+      responses:
+        '201':
+          description: Minerale creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Minerale'
+
+  /minerali/{id}:
+    get:
+      summary: Recupera i dettagli di un minerale specifico
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del minerale
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dettagli del minerale
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Minerale'
+        '404':
+          description: Minerale non trovato
+
+    put:
+      summary: Aggiorna i dettagli di un minerale
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del minerale
+          schema:
+            type: integer
+      requestBody:
+        description: Nuovi dati del minerale
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Minerale'
+      responses:
+        '200':
+          description: Minerale aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Minerale'
+        '404':
+          description: Minerale non trovato
+
+    delete:
+      summary: Elimina un minerale
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID del minerale
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Minerale eliminato con successo
+        '404':
+          description: Minerale non trovato
+
+components:
+  schemas:
+    Minerale:
+      type: object
+      required:
+        - nome
+        - tipo
+        - prezzo
+        - profondita
+        - purezza
+      properties:
+        id:
+          type: integer
+          description: ID del minerale
+        nome:
+          type: string
+          description: Il nome del minerale (es. "oro", "rame", "ferro")
+        tipo:
+          type: string
+          description: Il tipo di minerale (es. "metallo", "non-metallo")
+        quantita:
+          type: integer
+          description: La quantità disponibile del minerale (ad esempio in tonnellate)
+        prezzo:
+          type: integer
+          description: Il prezzo per unità del minerale (ad esempio per tonnellata o per chilo)
+        profondita:
+          type: integer
+          description: La profondta di scavo del minerale
+        purezza:
+          type: integer
+          description: La percentuale di purezza del minerale (es. 99.9%)

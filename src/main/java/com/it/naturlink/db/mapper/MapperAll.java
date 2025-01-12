@@ -8,15 +8,14 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper
-public interface AgricoloMapper {
+public interface MapperAll {
 
-    AgricoloMapper INSTANCE = Mappers.getMapper(AgricoloMapper.class);
+    MapperAll INSTANCE = Mappers.getMapper(MapperAll.class);
 
     List<Agricolo> toAgricoloList(List<Prodotto> agricoloDtoList);
     List<Prodotto> toProdottoList(List<Agricolo> agricoloDtoList);
 
 
    Agricolo toAgricolo(Prodotto prodotto);
-//
-//    Agricolo toAgricoloDto(Agricolo agricolo);
+
 }

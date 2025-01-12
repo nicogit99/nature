@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function caricaProdotti() {
         try {
             // Fetch dei dati tramite l'API fetch
-            const response = await fetch("/naturlink/agricoltura/datatable-framments");
+            const response = await fetch("/naturlink/agricolo/datatable-framments");
 
             // Verifica se la risposta è OK
             if (!response.ok) {
