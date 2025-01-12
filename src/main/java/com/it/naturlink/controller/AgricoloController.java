@@ -41,7 +41,25 @@ public class AgricoloController {
         return new ModelAndView("/agricolo/agricolo");
     }
 
+    @GetMapping("/allevamento")
+    public ModelAndView allevamentoPage() {
+        return new ModelAndView("/allevamento/allevanento");
+    }
 
+    @GetMapping("/pesca")
+    public ModelAndView pescaPage() {
+        return new ModelAndView("/pesca/pesca");
+    }
+
+    @GetMapping("/sivicoltura")
+    public ModelAndView sivicolturaPage() {
+        return new ModelAndView("/sivicoltura/sivicoltura");
+    }
+
+    @GetMapping("/minerali")
+    public ModelAndView mineraliPage() {
+        return new ModelAndView("/minerali/minerali");
+    }
 
     @GetMapping("agricolo/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragment() {
