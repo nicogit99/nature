@@ -4,12 +4,11 @@ import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Tempo;
 import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.model.Prodotto;
-import com.it.naturlink.service.AgricoloServiceImpl;
+import com.it.naturlink.service.AgricoloService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +22,7 @@ import java.util.Map;
 public class AgricoloController {
 
     @Autowired
-    private AgricoloServiceImpl agricoloService;
+    private AgricoloService agricoloService;
 
     @Autowired
     private Tempo tempo;  // Reuse the same weather object

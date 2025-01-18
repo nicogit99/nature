@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AgricoloServiceImpl implements  ProdottiApiDelegate {
+public class AgricoloService implements  ProdottiApiDelegate {
 
     @Autowired
     AgricoloRepository agricoloRepository;
@@ -22,23 +22,4 @@ public class AgricoloServiceImpl implements  ProdottiApiDelegate {
         return ResponseEntity.ok().body(prodottoList);
     }
 
-    @Override
-    public ResponseEntity<Void> prodottiIdDelete(Integer id) {
-        return ProdottiApiDelegate.super.prodottiIdDelete(id);
-    }
-
-    @Override
-    public ResponseEntity<Prodotto> prodottiIdGet(Integer id) {
-        return ProdottiApiDelegate.super.prodottiIdGet(id);
-    }
-
-    @Override
-    public ResponseEntity<Prodotto> prodottiIdPut(Integer id, Prodotto prodotto) {
-        return ProdottiApiDelegate.super.prodottiIdPut(id, prodotto);
-    }
-
-    @Override
-    public ResponseEntity<Prodotto> prodottiPost(Prodotto prodotto) {
-        return ProdottiApiDelegate.super.prodottiPost(prodotto);
-    }
 }

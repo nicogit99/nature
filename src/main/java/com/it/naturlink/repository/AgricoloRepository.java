@@ -1,6 +1,8 @@
 package com.it.naturlink.repository;
 
 import com.it.naturlink.db.Agricolo;
+import com.it.naturlink.db.Allevamento;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,3 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface AgricoloRepository extends JpaRepository<Agricolo, Integer> {
 
 }
+

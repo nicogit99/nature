@@ -16,9 +16,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Sivicolture extends Sivicoltura {
 
-
-
-
+    public Sivicolture(String nome, String tipo, Integer prezzo, Integer superficie, Integer giorniCrescita) {
+        super(nome, tipo, prezzo, superficie, giorniCrescita);
+    }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
     @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
