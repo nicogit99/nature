@@ -16,12 +16,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Pesce extends Pesca {
 
-    public Pesce(String tipo, Integer stockPesce, Integer profondita, Integer prezzo) {
-        super(tipo, stockPesce, profondita, prezzo);
+    public Pesce(String nome, String tipo, Integer stockPesce, Integer profondita, Integer prezzo) {
+        super(nome, tipo, stockPesce, profondita, prezzo);
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
+    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id_pesce", allocationSize = 1)
     @Id
     @Override
     public Integer getId() {

@@ -21,7 +21,7 @@ public class Agricolo extends Prodotto {
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
+    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id_agricolo", allocationSize = 1)
     @Id
     @Override
     public Integer getId() {

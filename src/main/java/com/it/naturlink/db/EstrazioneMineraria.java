@@ -18,12 +18,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class EstrazioneMineraria extends Minerale {
 
-    public EstrazioneMineraria(String nome, String tipo, Integer prezzo, Integer profondita, Integer purezza) {
-        super(nome, tipo, prezzo, profondita, purezza);
+
+    public EstrazioneMineraria(String nome, String tipo, Integer quantita, Integer prezzo, Integer profondita, Integer purezza) {
+        super(nome, tipo, quantita, prezzo, profondita, purezza);
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
+    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id_minerali", allocationSize = 1)
     @Id
     @Override
     public Integer getId() {

@@ -15,24 +15,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Allevamento extends Animale {
 
-
-    public Allevamento(String tipo, Integer prezzo) {
-        super(tipo, prezzo);
+    public Allevamento(String tipo, Integer prezzo, Integer quantita) {
+        super(tipo, prezzo, quantita);
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
+    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id_allevamento", allocationSize = 1)
     @Id
     @Override
     public Integer getId() {
         return super.getId();
     }
 
-    @Column(name = "nome")
-    @Override
-    public String getNome() {
-        return super.getNome();
-    }
 
     @Column(name = "tipo")
     @Override
@@ -47,5 +41,10 @@ public class Allevamento extends Animale {
         return super.getPrezzo();
     }
 
-
+    @Column(name = "quantita")
+    @Min(1) @Max(15)
+    @Override
+    public Integer getQuantita() {
+        return super.getQuantita();
+    }
 }

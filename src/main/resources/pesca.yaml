@@ -99,6 +99,7 @@ components:
     Pesca:
       type: object
       required:
+        - nome
         - tipo
         - prezzo
         - stockPesce

@@ -102,6 +102,7 @@ components:
         - nome
         - tipo
         - prezzo
+        - quantita
         - profondita
         - purezza
       properties:

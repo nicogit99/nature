@@ -119,8 +119,9 @@ public class Production {
             produzionePerAnimale = 4;  // 4 quintali di carne per suino in un anno (4 quintali = 0.4 tonnellate)
         } else if (tipoAnimale.equalsIgnoreCase("pollame")) {
             produzionePerAnimale = 2;  // 2 quintali di carne per pollo in un anno (2 quintali = 0.02 tonnellate)
+        } else if (tipoAnimale.equalsIgnoreCase("ovino")) {
+            produzionePerAnimale = 3;
         }
-
         // Calcolare la produzione totale moltiplicando per il numero di animali e il fattore di regolazione
         int produzioneTotale = numeroAnimali * produzionePerAnimale * fattoreTipoAnimale;
 

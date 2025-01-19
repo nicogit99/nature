@@ -102,6 +102,7 @@ components:
         - tipo
         - numero
         - prezzo
+        - quantita
       properties:
         id:
           type: integer
@@ -115,5 +116,8 @@ components:
         prezzo:
           type: integer
           description: Il prezzo per unità dell'animale
+        quantita:
+          type: integer
+          description: quantita
 
 

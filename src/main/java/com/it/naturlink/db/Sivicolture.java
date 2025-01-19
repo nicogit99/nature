@@ -21,7 +21,7 @@ public class Sivicolture extends Sivicoltura {
     }
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
-    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id", allocationSize = 1)
+    @SequenceGenerator(name = "id_sequence", sequenceName = "sequenza_id_sivicolture", allocationSize = 1)
     @Id
     @Override
     public Integer getId() {
