@@ -20,8 +20,6 @@ public class AllevamentoService implements AnimaliApiDelegate {
     @Override
     public ResponseEntity<List<Animale>> animaliGet() {
         List<Animale> animaleList= MapperAll.INSTANCE.toAnimaleList(allevamentoRepository.findAll());
-        if(animaleList.isEmpty())
-            return new ResponseEntity<>(animaleList, HttpStatusCode.valueOf(400));
         return ResponseEntity.ok(animaleList);
     }
 

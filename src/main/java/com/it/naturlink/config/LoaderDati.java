@@ -66,13 +66,8 @@ public class LoaderDati {
         CompletableFuture<Void> mineraliTask = caricaMinerali();
         CompletableFuture<Void> sivicolturaTask = caricaSivicolura();
 
-        // Attendi che tutti i task siano completati
         CompletableFuture.allOf(agricoloTask, allevamentoTask, pesceTask, mineraliTask ,sivicolturaTask ).join();
-        //caricaAgricolo();
-        //caricaAllevamento();
-        //caricaPesca();
-        //caricaMinerali();
-        //caricaSivicoltura();
+
     }
 
 
@@ -216,14 +211,14 @@ public class LoaderDati {
         Random random = new Random();
 
         List<Allevamento> animaliList = new ArrayList<>();
-         int prezzobovino = 1 + random.nextInt(6000);
-        int quantita = 5 + random.nextInt(15);
-        int prezzosuino = 1 + random.nextInt(6000);
-        int quantita1 = 5 + random.nextInt(15);
-        int prezzovino = 1 + random.nextInt(6000);
-        int quantita2 = 5 + random.nextInt(15);
-        int prezzopollame = 1 + random.nextInt(6000);
-        int quantita3 = 5 + random.nextInt(15);
+         int prezzobovino = 1 + random.nextInt(1000);
+        int quantita = 5 + random.nextInt(6);
+        int prezzosuino = 1 + random.nextInt(2000);
+        int quantita1 = 5 + random.nextInt(6);
+        int prezzovino = 1 + random.nextInt(1000);
+        int quantita2 = 5 + random.nextInt(10);
+        int prezzopollame = 1 + random.nextInt(500);
+        int quantita3 = 5 + random.nextInt(10);
 
         animaliList .add(new Allevamento("bovino",prezzobovino,quantita));
         animaliList .add(new Allevamento("suino", prezzosuino, quantita1));

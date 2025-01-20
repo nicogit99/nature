@@ -106,6 +106,9 @@ public class Production {
             case "pollame":
                 fattoreTipoAnimale = 1;  // Produzione media per pollame
                 break;
+            case "ovino":
+                fattoreTipoAnimale = 2;  // Produzione media per pollame
+                break;
             default:
                 fattoreTipoAnimale = 1;  // Se non riconosciuto, consideriamo un valore di base
                 break;

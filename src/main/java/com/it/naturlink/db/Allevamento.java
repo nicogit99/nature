@@ -47,4 +47,9 @@ public class Allevamento extends Animale {
     public Integer getQuantita() {
         return super.getQuantita();
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

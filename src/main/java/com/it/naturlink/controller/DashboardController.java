@@ -3,8 +3,10 @@ package com.it.naturlink.controller;
 import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Tempo;
 import com.it.naturlink.db.mapper.MapperAll;
+import com.it.naturlink.naturlink.model.Animale;
 import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.service.AgricoloService;
+import com.it.naturlink.service.AllevamentoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,14 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-public class AgricoloController {
+public class DashboardController {
 
     @Autowired
     private AgricoloService agricoloService;
+    @Autowired
+    private AllevamentoService allevamentoService;
+
+
 
     @Autowired
     private Tempo tempo;  // Reuse the same weather object
@@ -42,7 +48,7 @@ public class AgricoloController {
 
     @GetMapping("/allevamento")
     public ModelAndView allevamentoPage() {
-        return new ModelAndView("/allevamento/allevanento");
+        return new ModelAndView("/allevamento/allevamento");
     }
 
     @GetMapping("/pesca")
@@ -63,6 +69,7 @@ public class AgricoloController {
     @GetMapping("agricolo/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragment() {
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+        System.out.println(prodotti.getBody());
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
         int guadagnoperProdotto = 0;
@@ -91,6 +98,53 @@ public class AgricoloController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("allevamento/datatable-framments")
+    public ResponseEntity<Map<String, Object>> getTableFragmentAllevammento() {
+        ResponseEntity<List<Animale>> animali = allevamentoService.animaliGet();
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int guadagnoperProdotto = 0;
+        int totaleprodotti = 0;
+
+        for (Animale p : animali.getBody()) {
+
+            int tonnellate=Production.calcolaProduzioneAllevamentoAnimali(p.getQuantita(),p.getTipo());
+            tonnellateList.add(tonnellate);
+            guadagnoperProdotto = (MapperAll.INSTANCE.toAllevamento(p).getPrezzo() * tonnellate);
+            tonnellateGuadagno.add(guadagnoperProdotto);
+            totaleprodotti += (MapperAll.INSTANCE.toAllevamento(p).getPrezzo() * tonnellate) ;
+        }
+
+        // Create response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("tonnellateGuadagno", tonnellateGuadagno);
+
+        response.put("tonnellateList", tonnellateList);
+        response.put("animali", animali.getBody());
+
+        // Return ResponseEntity with data and HTTP status
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("json")
+    public ResponseEntity<List<Animale>>Allevamento() {
+        if(allevamentoService.animaliGet().getBody()==null){
+            System.out.println("nessum valore");
+        }
+        return ResponseEntity.ok(allevamentoService.animaliGet().getBody());
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }

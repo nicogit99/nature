@@ -100,16 +100,12 @@ components:
       type: object
       required:
         - tipo
-        - numero
         - prezzo
         - quantita
       properties:
         id:
           type: integer
           description: ID dell'animale
-        nome:
-          type: string
-          description: Il nome dell'animale
         tipo:
           type: string
           description: Il tipo di animale (ad esempio, "mucca", "pecora", "pollo")
