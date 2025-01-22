@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(tonnellateGuadagno);  // Log per controllo
 
 
-            animali.forEach((animali, index) => {
+            minerali.forEach((minerali, index) => {
                 const row = document.createElement("tr");
                 const {nome, tipo, quantita, prezzo,profondita,purezza} = minerali;
 
@@ -129,7 +129,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 
     function aggiornaGraficoChart(sommaList1, sommaList2, sommaList3,sommaTotale) {
-    sommaTotale=sommaTotale+50000;
+
 
         var ctx = document.getElementById("myBarChart");
         var myBarChart = new Chart(ctx, {

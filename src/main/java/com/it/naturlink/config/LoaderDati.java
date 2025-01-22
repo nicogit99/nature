@@ -189,9 +189,9 @@ public class LoaderDati {
         int quantita;
         List<EstrazioneMineraria> minerariaList = new ArrayList<>();
         for (int i = 0; i < elementi.size(); i++) {
-            prezzo = 1 + random.nextInt(1000); // Random number between 0 and 10
-            profondita = 1 + random.nextInt(2000) ;
-            purezza =1 + random.nextInt(98);
+            prezzo = 200 + random.nextInt(1000); // Random number between 0 and 10
+            profondita = 600 + random.nextInt(2000) ;
+            purezza =50 + random.nextInt(98);
             quantita=1 + random.nextInt(20);
             minerariaList.add(new EstrazioneMineraria(elementi.get(i), categoria,quantita, prezzo, profondita, purezza));
         }
@@ -258,7 +258,7 @@ public class LoaderDati {
         int giorniDiCrescita;
         List<Sivicolture> sivicoltureList = new ArrayList<>();
         for (int i = 0; i < elementi.size(); i++) {
-            prezzo = 1 + random.nextInt(4); // Random number between 0 and 10
+            prezzo = 1 + random.nextInt(2000); // Random number between 0 and 10
             superficie = 1 + random.nextInt(10) ;
             giorniDiCrescita = 41 + random.nextInt(79);
             sivicoltureList.add(new Sivicolture(elementi.get(i), categoria, prezzo, superficie, giorniDiCrescita));

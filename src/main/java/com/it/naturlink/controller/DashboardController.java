@@ -2,11 +2,13 @@ package com.it.naturlink.controller;
 
 import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Tempo;
+import com.it.naturlink.db.EstrazioneMineraria;
 import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.model.Animale;
+import com.it.naturlink.naturlink.model.Minerale;
 import com.it.naturlink.naturlink.model.Prodotto;
-import com.it.naturlink.service.AgricoloService;
-import com.it.naturlink.service.AllevamentoService;
+import com.it.naturlink.naturlink.model.Sivicoltura;
+import com.it.naturlink.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,15 @@ public class DashboardController {
     private AgricoloService agricoloService;
     @Autowired
     private AllevamentoService allevamentoService;
+
+    @Autowired
+    private EstrazioneService estrazioneService;
+
+    @Autowired
+    private PescaService pescaService;
+
+    @Autowired
+    private SivicolturaService sivicolturaService;
 
 
 
@@ -67,7 +78,7 @@ public class DashboardController {
     }
 
     @GetMapping("agricolo/datatable-framments")
-    public ResponseEntity<Map<String, Object>> getTableFragment() {
+    public ResponseEntity<Map<String, Object>> getTableFragmentAgricolo() {
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
         System.out.println(prodotti.getBody());
         List<Integer> tonnellateList = new ArrayList<>();
@@ -99,8 +110,42 @@ public class DashboardController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("sivicoltura/datatable-framments")
+    public ResponseEntity<Map<String, Object>> getTableFragmentSivicoltura() {
+        ResponseEntity<List<Sivicoltura>> sivicoltura= sivicolturaService.sivicolturaGet();
+        System.out.println(sivicoltura.getBody());
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int guadagnoperProdotto = 0;
+        int totaleprodotti = 0;
+
+        for (Sivicoltura p : sivicoltura.getBody()) {
+            int superficie = MapperAll.INSTANCE.toSivicolture(p).getSuperficie();
+            Integer giorniCrescita = MapperAll.INSTANCE.toSivicolture(p).getGiorniCrescita();
+
+            int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie,giorniCrescita,tempo.getPrecipitazioni(),tempo.getUmidita(),tempo.getTemperatura());
+            tonnellateList.add(tonnellate);
+            guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+            tonnellateGuadagno.add(guadagnoperProdotto);
+            totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+        }
+
+        // Create response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("tonnellateGuadagno", tonnellateGuadagno);
+
+        response.put("tonnellateList", tonnellateList);
+        response.put("sivicoltura", sivicoltura.getBody());
+
+        // Return ResponseEntity with data and HTTP status
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
     @GetMapping("allevamento/datatable-framments")
-    public ResponseEntity<Map<String, Object>> getTableFragmentAllevammento() {
+    public ResponseEntity<Map<String, Object>> getTableFragmentAllevamento() {
         ResponseEntity<List<Animale>> animali = allevamentoService.animaliGet();
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
@@ -129,13 +174,42 @@ public class DashboardController {
     }
 
     @GetMapping("json")
-    public ResponseEntity<List<Animale>>Allevamento() {
-        if(allevamentoService.animaliGet().getBody()==null){
+    public ResponseEntity<List<Sivicoltura>>Sivicoltura() {
+        if(sivicolturaService.sivicolturaGet()==null){
             System.out.println("nessum valore");
         }
-        return ResponseEntity.ok(allevamentoService.animaliGet().getBody());
+        return ResponseEntity.ok(sivicolturaService.sivicolturaGet().getBody());
     }
 
+
+    @GetMapping("minerali/datatable-framments")
+    public ResponseEntity<Map<String, Object>> getTableFragmentMinerali() {
+        ResponseEntity<List<Minerale>> minerali = estrazioneService.mineraliGet();
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int guadagnoperProdotto = 0;
+        int totaleprodotti = 0;
+
+        for (Minerale p : minerali.getBody()) {
+
+            int tonnellate=Production.calcolaProduzioneMineraria(p.getQuantita(),p.getPurezza(),p.getProfondita());
+            tonnellateList.add(tonnellate);
+            guadagnoperProdotto = (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+            tonnellateGuadagno.add(guadagnoperProdotto);
+            totaleprodotti += (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate) ;
+        }
+
+        // Create response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("tonnellateGuadagno", tonnellateGuadagno);
+
+        response.put("tonnellateList", tonnellateList);
+        response.put("minerali", minerali.getBody());
+
+
+
+        return ResponseEntity.ok(response);
+    }
 
 
 

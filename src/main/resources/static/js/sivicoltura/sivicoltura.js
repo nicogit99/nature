@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Creare le righe della tabella
             sivicoltura.forEach((sivicoltura, index) => {
                 const row = document.createElement("tr");
-                const { nome, tipo, prezzo, giorniCrescita, superficie } = sivicoltura;
+                const { nome, tipo, prezzo,  superficie,giorniCrescita } = sivicoltura;
 
                 row.appendChild(createTableCell(nome));  // Nome
                 row.appendChild(createTableCell(tipo));  // Tipo
@@ -87,7 +87,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
 
     function percentuale(tonnellateGuadagno){
-        const list1 = tonnellateGuadagno.slice(0, 3));
+        const list1 = tonnellateGuadagno.slice(0, 3);
         const list2 = tonnellateGuadagno.slice(3,6);
         const list3 = tonnellateGuadagno.slice(6,9);
 
@@ -165,7 +165,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: sommaTotale,
+                            max: 300000,
                             maxTicksLimit: 5, // Limita il numero di tick sull'asse Y
                             padding: 20, // Aggiunge spazio tra i tick sull'asse Y
                             // Include un simbolo di valuta nel label
