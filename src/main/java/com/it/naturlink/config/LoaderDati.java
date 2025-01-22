@@ -125,7 +125,7 @@ public class LoaderDati {
         // Liste di frutta, verdura e ortaggi
         List<String> predatori = Arrays.asList("tonno", "pesce spada", "merluzzo","salmone","spigola");
         List<String>  carapace = Arrays.asList("astice", "aragosta", "gamberetti","scampi","cicala greca");
-        List<String>  molluschi = Arrays.asList("cozze", "vongole", "ostriche","","capasanta","zeffiro");
+        List<String>  molluschi = Arrays.asList("cozze", "vongole", "ostriche","capasanta","zeffiro");
         Random random = new Random();
 
         List<Pesce> tuttipesci = new ArrayList<>();
@@ -146,10 +146,10 @@ public class LoaderDati {
         int stockPesce;
         List<Pesce>  pesceList = new ArrayList<>();
         for (int i = 0; i < elementi.size(); i++) {
-            prezzo = 1 + random.nextInt(1000); // Random number between 0 and 10
-            profondita = 1 + random.nextInt(2000) ;
-            stockPesce=1 + random.nextInt(100);
-            pesceList .add(new Pesce(elementi.get(i),categoria,stockPesce,profondita,prezzo));
+            prezzo = 1 + random.nextInt(300); // Random number between 0 and 10
+            profondita = 600 + random.nextInt(2000) ;
+            stockPesce=50 + random.nextInt(100);
+            pesceList.add(new Pesce(elementi.get(i),categoria,stockPesce,profondita,prezzo));
         }
 
         return pesceList ;

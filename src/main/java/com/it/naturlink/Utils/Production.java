@@ -44,9 +44,9 @@ public class Production {
     }
 
     // Metodo per calcolare la produzione del settore pesca in tonnellate
-    public static double calcolaProduzionePesca(int temperaturaAcqua, int profondita, int stockPesci) {
-        int fattoreTemperatura = (int) ((temperaturaAcqua >= 15 && temperaturaAcqua <= 25) ? 1.0 : 0.8);
-        int fattoreProfondita = (int) ((profondita >= 50 && profondita <= 200) ? 1.0 : 0.7);
+    public static int calcolaProduzionePesca(int temperaturaAcqua, int profondita, int stockPesci) {
+        int fattoreTemperatura =  ((temperaturaAcqua >= 15 && temperaturaAcqua <= 25) ? 8 : 4);
+        int fattoreProfondita =  ((profondita >= 50 && profondita <= 200) ? 7 : 2);
 
         // Produzione proporzionale allo stock di pesci e ai fattori
         return stockPesci * fattoreTemperatura * fattoreProfondita;

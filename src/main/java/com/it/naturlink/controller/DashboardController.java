@@ -4,10 +4,7 @@ import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Tempo;
 import com.it.naturlink.db.EstrazioneMineraria;
 import com.it.naturlink.db.mapper.MapperAll;
-import com.it.naturlink.naturlink.model.Animale;
-import com.it.naturlink.naturlink.model.Minerale;
-import com.it.naturlink.naturlink.model.Prodotto;
-import com.it.naturlink.naturlink.model.Sivicoltura;
+import com.it.naturlink.naturlink.model.*;
 import com.it.naturlink.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +77,6 @@ public class DashboardController {
     @GetMapping("agricolo/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentAgricolo() {
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
-        System.out.println(prodotti.getBody());
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
         int guadagnoperProdotto = 0;
@@ -110,10 +106,45 @@ public class DashboardController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("pesca/datatable-framments")
+    public ResponseEntity<Map<String, Object>> getTableFragmentPesca() {
+        ResponseEntity<List<Pesca>> pesci = pescaService.pesciGet();
+        List<Integer> tonnellateList = new ArrayList<>();
+        List<Integer> tonnellateGuadagno = new ArrayList<>();
+        int guadagnoperProdotto = 0;
+        int totaleprodotti = 0;
+
+        for (Pesca p : pesci.getBody()) {
+            int profondita = MapperAll.INSTANCE.toPesce(p).getProfondita();
+            Integer stockpesci = MapperAll.INSTANCE.toPesce(p).getStockPesce();
+
+
+            int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(),profondita,stockpesci);
+            System.out.println(tonnellate);
+            tonnellateList.add(tonnellate);
+            guadagnoperProdotto = (MapperAll.INSTANCE.toPesce(p).getPrezzo() *  tonnellate);
+//            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            tonnellateGuadagno.add(guadagnoperProdotto);
+            totaleprodotti += (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
+        }
+
+        // Create response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("tonnellateGuadagno", tonnellateGuadagno);
+
+        response.put("tonnellateList", tonnellateList);
+        response.put("pesci", pesci.getBody());
+
+        //
+
+        return ResponseEntity.ok(response);
+    }
+
+
     @GetMapping("sivicoltura/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentSivicoltura() {
         ResponseEntity<List<Sivicoltura>> sivicoltura= sivicolturaService.sivicolturaGet();
-        System.out.println(sivicoltura.getBody());
+
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
         int guadagnoperProdotto = 0;
@@ -174,11 +205,11 @@ public class DashboardController {
     }
 
     @GetMapping("json")
-    public ResponseEntity<List<Sivicoltura>>Sivicoltura() {
-        if(sivicolturaService.sivicolturaGet()==null){
+    public ResponseEntity<List<Pesca>>Sivicoltura() {
+        if(pescaService.pesciGet()==null){
             System.out.println("nessum valore");
         }
-        return ResponseEntity.ok(sivicolturaService.sivicolturaGet().getBody());
+        return ResponseEntity.ok(pescaService.pesciGet().getBody());
     }
 
 

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function caricaProdotti() {
         try {
             // Fetch dei dati tramite l'API fetch
-            const response = await fetch("/naturlink/allevamento/datatable-framments");
+            const response = await fetch("/naturlink/pesca/datatable-framments");
 
             // Verifica se la risposta è OK
             if (!response.ok) {
@@ -19,21 +19,23 @@ document.addEventListener("DOMContentLoaded", function() {
             tableBody.innerHTML = ""; // Svuotare il corpo della tabella
 
             // Destrutturazione dei dati per una lettura più semplice
-            const { animali, tonnellateList = [], tonnellateGuadagno = [] } = data;
+            const { pesci, tonnellateList = [], tonnellateGuadagno = [] } = data;
 
             console.log(tonnellateGuadagno);  // Log per controllo
 
             // Creare le righe della tabella
-            animali.forEach((animali, index) => {
+           pesci.forEach((pesci, index) => {
                 const row = document.createElement("tr");
-                const { tipo, prezzo, quantita} = animali;
+                const { nome, tipo, stockPesce, profondita,prezzo } = pesci;
 
-                row.appendChild(createTableCell(tipo));  // Tipo
-                row.appendChild(createTableCell(prezzo)); // Prezzo
-                row.appendChild(createTableCell(quantita));
+                row.appendChild(createTableCell(nome));  // Nome
+                row.appendChild(createTableCell(tipo));
+                row.appendChild(createTableCell(stockPesce));// Tipo
+                row.appendChild(createTableCell(profondita)); // Prezzo
+                row.appendChild(createTableCell(prezzo)); // Giorni di crescita
 
 
-
+                // Aggiungere le celle per Tonnellate e Guadagno
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
                 row.appendChild(createTableCell(tonnellateGuadagno[index] || 'N/A'));  // Guadagno
 
@@ -86,11 +88,9 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
 
     function percentuale(tonnellateGuadagno){
-        const list1 = tonnellateGuadagno.slice(0, 1);  // first element
-        const list2 = tonnellateGuadagno.slice(1, 2);  // second element
-        const list3 = tonnellateGuadagno.slice(2, 3);  // third element
-        const list4 = tonnellateGuadagno.slice(3);     // fourth element
-
+        const list1 = tonnellateGuadagno.slice(0,4);
+        const list2 = tonnellateGuadagno.slice(4,9);
+        const list3 = tonnellateGuadagno.slice(9,14);
 
 
         const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
@@ -99,46 +99,43 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         const sommaList1 = somma(list1);
         const sommaList2 = somma(list2);
         const sommaList3 = somma(list3);
-         const sommaList4 = somma(list4);
 
 
 
-        const sommaTotale = sommaList1 + sommaList2 + sommaList3+sommaList4;
+        const sommaTotale = sommaList1 + sommaList2 + sommaList3;
 
-        aggiornaGraficoChart(sommaList1,sommaList2,sommaList3,sommaList4,sommaTotale);
+        aggiornaGraficoChart(sommaList1,sommaList2,sommaList3,sommaTotale);
 
         let percentualeList1 = sommaTotale ? (sommaList1 / sommaTotale) * 100 : 0;
         let percentualeList2 = sommaTotale ? (sommaList2 / sommaTotale) * 100 : 0;
         let percentualeList3 = sommaTotale ? (sommaList3 / sommaTotale) * 100 : 0;
-          let percentualeList4 = sommaTotale ? (sommaList4 / sommaTotale) * 100 : 0;
 
 
         percentualeList1 = Math.floor(percentualeList1);
         percentualeList2 = Math.floor(percentualeList2);
         percentualeList3 = Math.floor(percentualeList3);
-          percentualeList4 = Math.floor(percentualeList4);
 
-        return [percentualeList1, percentualeList2, percentualeList3,percentualeList4];
+        return [percentualeList1, percentualeList2, percentualeList3];
     }
 
 
 
 
 
-    function aggiornaGraficoChart(sommaList1, sommaList2, sommaList3,sommaList4, sommaTotale) {
+    function aggiornaGraficoChart(sommaList1, sommaList2, sommaList3, sommaTotale) {
     sommaTotale=sommaTotale+50000;
 
         var ctx = document.getElementById("myBarChart");
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Bovino", "Suino", "Ovino","Pollame"],
+                labels: ["Predatori", "Carapaci", "Molluschi"],
                 datasets: [{
                     label: "Revenue",
                     backgroundColor: "#4e73df",
                     hoverBackgroundColor: "#2e59d9",
                     borderColor: "#4e73df",
-                    data: [sommaList1, sommaList2, sommaList3,sommaList4],
+                    data: [sommaList1, sommaList2, sommaList3],
                 }],
             },
             options: {
@@ -169,7 +166,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: 100000,
+                            max: sommaTotale,
                             maxTicksLimit: 5, // Limita il numero di tick sull'asse Y
                             padding: 20, // Aggiunge spazio tra i tick sull'asse Y
                             // Include un simbolo di valuta nel label
@@ -227,11 +224,11 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         window.myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["Ovino", "Suino", "Pollame","Bovino"], // Etichette per ogni categoria
+                labels: ["Predatori", "Carapaci", "Molluschi"], // Etichette per ogni categoria
                 datasets: [{
                     data: percentualeList,  // Guadagno per ogni prodotto
-                    backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc','#e67e22'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf','#e67e22'],
+                    backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
             },

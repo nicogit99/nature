@@ -87,9 +87,9 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
 
     function percentuale(tonnellateGuadagno){
-        const list1 = tonnellateGuadagno.slice(0, Math.ceil(tonnellateGuadagno.length / 3));
-        const list2 = tonnellateGuadagno.slice(Math.ceil(tonnellateGuadagno.length / 3), Math.ceil(2 * tonnellateGuadagno.length / 3));
-        const list3 = tonnellateGuadagno.slice(Math.ceil(2 * tonnellateGuadagno.length / 3));
+        const list1 = tonnellateGuadagno.slice(0,3);
+        const list2 = tonnellateGuadagno.slice(3,6);
+        const list3 = tonnellateGuadagno.slice(6,9);
 
 
         const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
