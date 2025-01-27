@@ -11277,22 +11277,195 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
-    #loadingSpinner {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid #f3f3f3; /* Light grey background */
-            border-top: 8px solid #3498db; /* Blue color */
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-        }
 
-        /* Animation for spinning the loader */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+
+
+   /* Titoli principali */
+   h1, h2 {
+     color: #333;
+     text-align: center;
+     font-weight: 600;
+   }
+
+   h1 {
+     font-size: 2rem;
+     margin-bottom: 15px;
+   }
+
+   h2 {
+     margin-top: 30px;
+     font-size: 1.5rem;
+     color: #444;
+   }
+
+   /* Specifico per ciascuna tabella tramite ID */
+
+   /* Tabella Estrazione Mineraria */
+   #miningTable {
+     width: 100%;
+     margin-top: 20px;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   #miningTable th, #miningTable td {
+     padding: 12px 20px;
+     text-align: left;
+     font-size: 1rem;
+   }
+
+   #miningTable th {
+     background-color: #4e73df;
+     color: #fff;
+     text-transform: uppercase;
+   }
+
+   #miningTable td {
+     background-color: #f9fafb;
+     border-bottom: 1px solid #ddd;
+     color: #333;
+   }
+
+   #miningTable tr:hover td {
+     background-color: #f1f3f8;
+     transition: background-color 0.3s ease;
+   }
+
+   /* Tabella Allevamento */
+   #livestockTable {
+     width: 100%;
+     margin-top: 20px;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   #livestockTable th, #livestockTable td {
+     padding: 12px 20px;
+     text-align: left;
+     font-size: 1rem;
+   }
+
+   #livestockTable th {
+     background-color: #1cc88a;
+     color: #fff;
+     text-transform: uppercase;
+   }
+
+   #livestockTable td {
+     background-color: #f9fafb;
+     border-bottom: 1px solid #ddd;
+     color: #333;
+   }
+
+   #livestockTable tr:hover td {
+     background-color: #f1f3f8;
+     transition: background-color 0.3s ease;
+   }
+
+   /* Tabella Silvicoltura */
+   #forestryTable {
+     width: 100%;
+     margin-top: 20px;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   #forestryTable th, #forestryTable td {
+     padding: 12px 20px;
+     text-align: left;
+     font-size: 1rem;
+   }
+
+   #forestryTable th {
+     background-color: #36b9cc;
+     color: #fff;
+     text-transform: uppercase;
+   }
+
+   #forestryTable td {
+     background-color: #f9fafb;
+     border-bottom: 1px solid #ddd;
+     color: #333;
+   }
+
+   #forestryTable tr:hover td {
+     background-color: #f1f3f8;
+     transition: background-color 0.3s ease;
+   }
+
+   /* Tabella Pesca */
+   #fishingTable {
+     width: 100%;
+     margin-top: 20px;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   #fishingTable th, #fishingTable td {
+     padding: 12px 20px;
+     text-align: left;
+     font-size: 1rem;
+   }
+
+   #fishingTable th {
+     background-color: #f6c23e;
+     color: #fff;
+     text-transform: uppercase;
+   }
+
+   #fishingTable td {
+     background-color: #f9fafb;
+     border-bottom: 1px solid #ddd;
+     color: #333;
+   }
+
+   #fishingTable tr:hover td {
+     background-color: #f1f3f8;
+     transition: background-color 0.3s ease;
+   }
+
+   /* Tabella Agricoltura */
+   #agricultureTable {
+     width: 100%;
+     margin-top: 20px;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   #agricultureTable th, #agricultureTable td {
+     padding: 12px 20px;
+     text-align: left;
+     font-size: 1rem;
+   }
+
+   #agricultureTable th {
+     background-color: #e74a3b;
+     color: #fff;
+     text-transform: uppercase;
+   }
+
+   #agricultureTable td {
+     background-color: #f9fafb;
+     border-bottom: 1px solid #ddd;
+     color: #333;
+   }
+
+   #agricultureTable tr:hover td {
+     background-color: #f1f3f8;
+     transition: background-color 0.3s ease;
+   }
+
+
+
+
+
