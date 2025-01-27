@@ -191,7 +191,7 @@ public class LoaderDati {
         for (int i = 0; i < elementi.size(); i++) {
             prezzo = 200 + random.nextInt(1000); // Random number between 0 and 10
             profondita = 600 + random.nextInt(2000) ;
-            purezza =50 + random.nextInt(98);
+            purezza = 30 + random.nextInt(61); // random.nextInt(71) genera un numero tra 0 e 70, che sommato a 20 dà un valore tra 20 e 90.
             quantita=1 + random.nextInt(20);
             minerariaList.add(new EstrazioneMineraria(elementi.get(i), categoria,quantita, prezzo, profondita, purezza));
         }

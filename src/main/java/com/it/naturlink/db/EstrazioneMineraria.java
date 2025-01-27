@@ -64,7 +64,7 @@ public class EstrazioneMineraria extends Minerale {
     }
 
     @Column(name = "purezza")
-    @Min(1) @Max(99)
+    @Min(1) @Max(80)
     @Override
     public Integer getPurezza() {
         return super.getPurezza();

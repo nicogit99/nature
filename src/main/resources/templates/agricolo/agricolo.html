@@ -15,11 +15,6 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Agricolo</h1>
-                <p class="mb-4">Chart.js is a third-party plugin used to generate charts in this theme.
-                    The charts below have been customized. For further customization options, please visit the
-                    <a target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js documentation</a>.
-                </p>
-
                 <!-- mettere tutti i grafici-->
                 <div xmlns:th="http://www.thymeleaf.org">
                     <div class="row">
@@ -27,14 +22,14 @@
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Raccolto annuo</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-bar">
                                         <canvas id="myBarChart"></canvas>
                                     </div>
                                     <hr>
-                                    Grafico a torta
+                                   Guadagno totale per tipologia
 
                                 </div>
                             </div>
@@ -43,14 +38,14 @@
                         <div class="col-xl-6 col-lg-2"  xmlns:th="http://www.thymeleaf.org" >
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Percentuale guadagno</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-pie pt-4">
                                     <canvas id="myPieChart"></canvas>
                                 </div>
                                 <hr>
-
+                                Guadagno totale in percentuale
                             </div>
                         </div>
                     </div>
@@ -67,11 +62,11 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Tipo</th>
-                                        <th>Prezzo</th>
+                                        <th>Prezzo €</th>
                                         <th>giorniCrescita</th>
-                                        <th>Superfice</th>
+                                        <th>Superfice(in ettari)</th>
                                         <th>Tonnellate</th>
-                                        <th>Guadagno Totale</th>
+                                        <th>Guadagno Totale €</th>
                                     </tr>
                                     </thead>
                                     <tbody>

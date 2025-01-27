@@ -131,7 +131,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
             data: {
                 labels: ["Predatori", "Carapaci", "Molluschi"],
                 datasets: [{
-                    label: "Revenue",
+                    label: "Guadagno",
                     backgroundColor: "#4e73df",
                     hoverBackgroundColor: "#2e59d9",
                     borderColor: "#4e73df",
@@ -171,7 +171,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                             padding: 20, // Aggiunge spazio tra i tick sull'asse Y
                             // Include un simbolo di valuta nel label
                             callback: function(value, index, values) {
-                                return '$' + number_format(value);
+                                return '€' + number_format(value);
                             }
                         },
                         gridLines: {

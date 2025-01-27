@@ -130,7 +130,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
             data: {
                 labels: ["Frutta", "Verdura", "Ortaggi"],
                 datasets: [{
-                    label: "Revenue",
+                    label: "Guadagno",
                     backgroundColor: "#4e73df",
                     hoverBackgroundColor: "#2e59d9",
                     borderColor: "#4e73df",
@@ -165,7 +165,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: sommaTotale,
+                            max:500000,
                             maxTicksLimit: 5, // Limita il numero di tick sull'asse Y
                             padding: 20, // Aggiunge spazio tra i tick sull'asse Y
                             // Include un simbolo di valuta nel label
@@ -200,7 +200,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     callbacks: {
                         label: function(tooltipItem, chart) {
                             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                            return datasetLabel + ': €' + number_format(tooltipItem.yLabel);
                         }
                     }
                 },
