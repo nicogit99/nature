@@ -7,37 +7,37 @@ import org.springframework.stereotype.Component;
 public class Production {
 
     // Metodo per calcolare la produzione agricola in tonnellate
-    public static int calcolaProduzioneAgricola(int tempoIniziale, int temperatura, int precipitazioni, int umidita, int superficie) {
+    public static int calcolaProduzioneAgricola(int tempoInizialeCrescita, int temperatura, int precipitazioni, int umidita, int superficie) {
         int raccoltoBase = 2;  // Raccolto base per unità di superficie
 
         // Modifica il raccolto base in funzione del tempo di crescita
-        if (tempoIniziale > 100) {
+        if (tempoInizialeCrescita > 100) {
             raccoltoBase = 4;
-        } else if (tempoIniziale < 50) {
+        } else if (tempoInizialeCrescita < 50) {
             raccoltoBase = 2;
         }
 
         // Modifica del tempo di crescita in base alle condizioni
-        double tempoFinale = tempoIniziale;
+        double tempoFinale = tempoInizialeCrescita;
 
         if (temperatura > 30) {
-            tempoFinale -= tempoIniziale * 0.10;
+            tempoFinale -= tempoInizialeCrescita * 0.10;
         } else if (temperatura < 20) {
-            tempoFinale += tempoIniziale * 0.15;
+            tempoFinale += tempoInizialeCrescita * 0.15;
         }
 
         if (precipitazioni > 80) {
-            tempoFinale -= tempoIniziale * 0.05;
+            tempoFinale -= tempoInizialeCrescita * 0.05;
         } else if (precipitazioni < 20) {
-            tempoFinale += tempoIniziale * 0.10;
+            tempoFinale += tempoInizialeCrescita * 0.10;
         }
 
         if (umidita < 40 || umidita > 80) {
-            tempoFinale += tempoIniziale * 0.05;
+            tempoFinale += tempoInizialeCrescita * 0.05;
         }
 
         // Produzione agricola proporzionale al tempo di crescita finale
-        double produzionePerUnità = raccoltoBase * (tempoFinale / tempoIniziale);
+        double produzionePerUnità = raccoltoBase * (tempoFinale / tempoInizialeCrescita);
 
         // Moltiplica per la superficie per ottenere la produzione totale
         return (int) (produzionePerUnità * superficie);

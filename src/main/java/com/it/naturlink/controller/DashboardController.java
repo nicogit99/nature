@@ -2,6 +2,7 @@ package com.it.naturlink.controller;
 
 import com.it.naturlink.Utils.Production;
 import com.it.naturlink.Utils.Tempo;
+import com.it.naturlink.db.Agricolo;
 import com.it.naturlink.db.EstrazioneMineraria;
 import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.model.*;
@@ -9,7 +10,10 @@ import com.it.naturlink.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -84,14 +88,22 @@ public class DashboardController {
 
         for (Prodotto p : prodotti.getBody()) {
             int superficie = MapperAll.INSTANCE.toAgricolo(p).getSuperficie();
-            Integer giorniCrescita = MapperAll.INSTANCE.toAgricolo(p).getGiorniCrescita();
+            Integer giorniCrescita=MapperAll.INSTANCE.toAgricolo(p).getGiorniCrescita();
+            if (giorniCrescita != null) {
+                int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie);
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            } else {
+                // Se giorniCrescita è null, usa un valore predefinito per il calcolo
+                int tonnellate = Production.calcolaProduzioneAgricola(0, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie); // oppure usa un altro valore predefinito
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+            }
 
-            int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie);
-            tonnellateList.add(tonnellate);
-            guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
-//            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
-            tonnellateGuadagno.add(guadagnoperProdotto);
-            totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
         }
 
         // Create response map
@@ -106,6 +118,39 @@ public class DashboardController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/submitForm")
+    public ModelAndView submitFormAll(@ModelAttribute Animale , Model model) {
+        agricoloService.prodottoPost(agricolo);  // Save the product
+        model.addAttribute("agricolo", "salvato");  // Add an attribute to indicate that the save was successful
+        // Return a ModelAndView with a redirect to the agricolo page
+        return new ModelAndView("redirect:/agricolo");
+    }
+
+    @PostMapping("/submitForm")
+    public ModelAndView submitForm(@ModelAttribute Prodotto agricolo, Model model) {
+        agricoloService.prodottoPost(agricolo);  // Save the product
+        model.addAttribute("agricolo", "salvato");  // Add an attribute to indicate that the save was successful
+        // Return a ModelAndView with a redirect to the agricolo page
+        return new ModelAndView("redirect:/agricolo");
+    }
+
+    @PostMapping("/submitForm")
+    public ModelAndView submitForm(@ModelAttribute Prodotto agricolo, Model model) {
+        agricoloService.prodottoPost(agricolo);  // Save the product
+        model.addAttribute("agricolo", "salvato");  // Add an attribute to indicate that the save was successful
+        // Return a ModelAndView with a redirect to the agricolo page
+        return new ModelAndView("redirect:/agricolo");
+    }
+
+    @PostMapping("/submitForm")
+    public ModelAndView submitForm(@ModelAttribute Prodotto agricolo, Model model) {
+        agricoloService.prodottoPost(agricolo);  // Save the product
+        model.addAttribute("agricolo", "salvato");  // Add an attribute to indicate that the save was successful
+        // Return a ModelAndView with a redirect to the agricolo page
+        return new ModelAndView("redirect:/agricolo");
+    }
+
+
     @GetMapping("pesca/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentPesca() {
         ResponseEntity<List<Pesca>> pesci = pescaService.pesciGet();
@@ -118,14 +163,23 @@ public class DashboardController {
             int profondita = MapperAll.INSTANCE.toPesce(p).getProfondita();
             Integer stockpesci = MapperAll.INSTANCE.toPesce(p).getStockPesce();
 
-
-            int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(),profondita,stockpesci);
-            System.out.println(tonnellate);
-            tonnellateList.add(tonnellate);
-            guadagnoperProdotto = (MapperAll.INSTANCE.toPesce(p).getPrezzo() *  tonnellate);
+            if(stockpesci!=null){
+                int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(),profondita,stockpesci);
+                System.out.println(tonnellate);
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toPesce(p).getPrezzo() *  tonnellate);
 //            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
-            tonnellateGuadagno.add(guadagnoperProdotto);
-            totaleprodotti += (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
+            }else {
+                int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(), profondita, 0);
+                System.out.println(tonnellate);
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
+//            totaleprodotti += (AgricoloMapper.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
+            }
         }
 
         // Create response map

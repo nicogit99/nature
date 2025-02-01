@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface  AllevamentoRepository extends  JpaRepository<Allevamento, Integer> {
+
+
     
 }
 

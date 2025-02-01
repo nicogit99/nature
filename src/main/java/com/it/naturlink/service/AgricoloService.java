@@ -22,4 +22,8 @@ public class AgricoloService implements  ProdottiApiDelegate {
         return ResponseEntity.ok().body(prodottoList);
     }
 
+
+    public  void prodottoPost(Prodotto prodotto){
+        agricoloRepository.save(MapperAll.INSTANCE.toAgricolo(prodotto));
+    }
 }

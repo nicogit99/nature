@@ -1,4 +1,3 @@
-
 <div id="wrapper">
     <div th:insert="header"></div>
     <div id="content-wrapper" class="d-flex flex-column">
@@ -15,77 +14,110 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Agricolo</h1>
+
                 <!-- mettere tutti i grafici-->
                 <div xmlns:th="http://www.thymeleaf.org">
                     <div class="row">
 
+                        <!-- Card per il grafico a barre -->
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Raccolto annuo</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-bar">
-                                        <canvas id="myBarChart"></canvas>
+                                    <div class="chart-bar position-relative">
+                                        <!-- Loader circolare per il grafico a barre, centrato -->
+                                        <div class="circle-loader" id="loaderBarChart"></div>
+                                        <canvas id="myBarChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
                                     </div>
                                     <hr>
-                                   Guadagno totale per tipologia
-
+                                    Guadagno totale per tipologia
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-2"  xmlns:th="http://www.thymeleaf.org" >
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Percentuale guadagno</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-pie pt-4">
-                                    <canvas id="myPieChart"></canvas>
+                        <!-- Card per il grafico a torta -->
+                        <div class="col-xl-6 col-lg-2">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Percentuale guadagno</h6>
                                 </div>
-                                <hr>
-                                Guadagno totale in percentuale
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                    <div ></div>
-                    <div>
-                        <div class="card shadow ">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="80%" cellspacing="0"  >
-                                    <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Tipo</th>
-                                        <th>Prezzo €</th>
-                                        <th>giorniCrescita</th>
-                                        <th>Superfice(in ettari)</th>
-                                        <th>Tonnellate</th>
-                                        <th>Guadagno Totale €</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-
-                                </table>
+                                <div class="card-body">
+                                    <div class="chart-pie position-relative">
+                                        <!-- Loader circolare per il grafico a torta, centrato -->
+                                        <div class="circle-loader" id="loaderPieChart"></div>
+                                        <canvas id="myPieChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
+                                    </div>
+                                    <hr>
+                                    Guadagno totale in percentuale
+                                </div>
                             </div>
                         </div>
 
-
                     </div>
 
-                </div>
+                    <!-- Tabella -->
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <!-- Loader della tabella -->
+                                    <div class="circle-loader" id="loaderDataTable"></div> <!-- Loader Tabella -->
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="display: none;">
+                                        <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Tipo</th>
+                                            <th>Prezzo €</th>
+                                            <th>giorniCrescita</th>
+                                            <th>Superficie(in ettari)</th>
+                                            <th>Tonnellate</th>
+                                            <th>Guadagno Totale €</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Form Section placed next to the table -->
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title">Aggiungi Ortaggio</h5>
+                                    <form th:action="@{/submitForm}" th:object="${agricolo}" method="post">
+                                        <div class="form-group">
+                                            <label for="nome">Nome</label>
+                                            <input type="text" class="form-control" id="nome" name="nome" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tipo">Tipo</label>
+                                            <input type="text" class="form-control" id="tipo" name="tipo" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="prezzo">Prezzo (€)</label>
+                                            <input type="number" class="form-control" id="prezzo" name="prezzo" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="giornicrescita">giornicrescita</label>
+                                            <input type="text" class="form-control" id="giornicrescita" name="giornicrescita" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="superficie">Superficie (in ettari)</label>
+                                            <input type="number" class="form-control" id="superficie" name="superficie" required />
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Invia</button>
+                                        <p th:text="${message}"></p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
-
-
+                    </div>
 
                 </div>
             </div>
@@ -93,9 +125,9 @@
 
         </div>
         <!-- End of Main Content -->
-    <script th:src="@{/js/agricolo/agricolo.js}"></script>
-</div>
-
+        <script th:src="@{/js/agricolo/agricolo.js}"></script>
+    </div>
 
     <!-- End of Content Wrapper -->
-<div th:insert="footer"></div>
+    <div th:insert="footer"></div>
+</div>
