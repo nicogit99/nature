@@ -104,40 +104,6 @@ public class DashboardController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/submitFormAgricolo")
-    public ModelAndView submitFormAgricolo(@ModelAttribute Prodotto agricolo, Model model) {
-        agricoloService.prodottoPost(agricolo);
-        model.addAttribute("agricolo", "salvato");
-        return new ModelAndView("redirect:/agricolo");
-    }
-
-    @PostMapping("/submitFormAllevamento")
-    public ModelAndView submitFormAllevamento(@ModelAttribute Animale animale, Model model) {
-        allevamentoService.animalePost(animale);
-        model.addAttribute("allevamento", "salvato");
-        return new ModelAndView("redirect:/allevamento");
-    }
-
-    @PostMapping("/submitFormPesca")
-    public ModelAndView submitFormPesca(@ModelAttribute Pesca pesca, Model model) {
-        pescaService.pescaPost(pesca);
-        model.addAttribute("pesca", "salvato");
-        return new ModelAndView("redirect:/pesca");
-    }
-
-    @PostMapping("/submitFormSivicoltura")
-    public ModelAndView submitFormSivicoltura(@ModelAttribute Sivicoltura sivicoltura, Model model) {
-        sivicolturaService.sivicolturaPost(sivicoltura);
-        model.addAttribute("sivicoltura", "salvato");
-        return new ModelAndView("redirect:/sivicoltura");
-    }
-
-    @PostMapping("/submitFormMinerali")
-    public ModelAndView submitFormMinerali(@ModelAttribute Minerale minerale, Model model) {
-        estrazioneService.mineralePost(minerale);
-        model.addAttribute("minerale", "salvato");
-        return new ModelAndView("redirect:/minerali");
-    }
 
     @GetMapping("pesca/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentPesca() {
