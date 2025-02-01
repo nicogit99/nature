@@ -89,7 +89,7 @@
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h5 class="card-title">Aggiungi Ortaggio</h5>
-                                    <form th:action="@{/submitForm}" th:object="${agricolo}" method="post">
+                                    <form th:action="@{/submitFormAgricolo}" th:object="${agricolo}" method="post">
                                         <div class="form-group">
                                             <label for="nome">Nome</label>
                                             <input type="text" class="form-control" id="nome" name="nome" required />
