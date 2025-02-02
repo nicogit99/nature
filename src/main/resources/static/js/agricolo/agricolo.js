@@ -22,16 +22,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const data = await response.json();
-            console.log(data)
+            console.log(data);
 
             const tableBody = document.querySelector("#dataTable tbody");
             tableBody.innerHTML = ""; // Svuotare la tabella
 
-            const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo=[] } = data;
-
-
-
-
+            const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
 
             prodotti.forEach((prodotto, index) => {
                 const row = document.createElement("tr");
@@ -39,18 +35,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 row.appendChild(createTableCell(nome));  // Nome
                 row.appendChild(createTableCell(tipo));  // Tipo
-                row.appendChild(createTableCell(prezzo+"€")); // Prezzo
+                row.appendChild(createTableCell(prezzo + "€")); // Prezzo
                 row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-                row.appendChild(createTableCell(superficie +"ha")); // Superficie
+                row.appendChild(createTableCell(superficie + "ha")); // Superficie
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
-                row.appendChild(createTableCell(tonnellateGuadagno[index]+ "€" || 'N/A'));  // Guadagno
+                row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
 
                 tableBody.appendChild(row);
             });
 
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
-
 
             setTimeout(() => {
                 loaderVisible = false;
@@ -60,13 +55,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("myPieChart").style.display = "block";
                 document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
                 document.getElementById("loaderDataTable").style.display = "none";  // Nascondi il loader della tabella
-                document.getElementById("precipitazioniValore").textContent = Meteo[0]+"mm" || 'N/A';
-                document.getElementById("umiditaValore").textContent = Meteo[1]+"%"|| 'N/A';
-                document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
+                document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
+                document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
+                document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
                 // Calcola e mostra il sommatotale dopo che i loader sono spariti
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 20000);
+            }, 2000);
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -168,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             maxTicksLimit: 5,
                             padding: 20,
                             callback: function(value) {
-                                return '$' + number_format(value);
+                                return '€' + number_format(value);
                             }
                         },
                         gridLines: {
@@ -278,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Carica i prodotti inizialmente
     caricaProdotti();
 
-    // Imposta un intervallo per aggiornare i prodotti ogni 10 secondi
+    // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
     setInterval(caricaProdotti, 20000);
+
 });

@@ -185,11 +185,22 @@ public class DashboardController {
             int superficie = MapperAll.INSTANCE.toSivicolture(p).getSuperficie();
             Integer giorniCrescita = MapperAll.INSTANCE.toSivicolture(p).getGiorniCrescita();
 
-            int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie, giorniCrescita, tempo.getPrecipitazioni(), tempo.getUmidita(), tempo.getTemperatura());
-            tonnellateList.add(tonnellate);
-            guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
-            tonnellateGuadagno.add(guadagnoperProdotto);
-            totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+            if(giorniCrescita!=null){
+                int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie, giorniCrescita, tempo.getPrecipitazioni(), tempo.getUmidita(), tempo.getTemperatura());
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+            }else{
+                int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie, 0, tempo.getPrecipitazioni(), tempo.getUmidita(), tempo.getTemperatura());
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
+
+            }
+
+
         }
 
         Map<String, Object> response = new HashMap<>();
