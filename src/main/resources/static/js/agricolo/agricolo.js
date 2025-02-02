@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 row.appendChild(createTableCell(tipo));  // Tipo
                 row.appendChild(createTableCell(prezzo + "€")); // Prezzo
                 row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-                row.appendChild(createTableCell(superficie + "ha")); // Superficie
+                row.appendChild(createTableCell(superficie )); // Superficie
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
                 row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
 

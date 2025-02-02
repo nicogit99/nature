@@ -82,18 +82,19 @@ public class DashboardController {
         for (Prodotto p : prodotti.getBody()) {
             int superficie = MapperAll.INSTANCE.toAgricolo(p).getSuperficie();
             Integer giorniCrescita = MapperAll.INSTANCE.toAgricolo(p).getGiorniCrescita();
+
             if (giorniCrescita != null) {
                 int tonnellate = Production.calcolaProduzioneAgricola(giorniCrescita, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie);
                 tonnellateList.add(tonnellate);
                 guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
                 tonnellateGuadagno.add(guadagnoperProdotto);
-                totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+
             } else {
                 int tonnellate = Production.calcolaProduzioneAgricola(0, tempo.getTemperatura(), tempo.getPrecipitazioni(), tempo.getUmidita(), superficie);
                 tonnellateList.add(tonnellate);
                 guadagnoperProdotto = (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
                 tonnellateGuadagno.add(guadagnoperProdotto);
-                totaleprodotti += (MapperAll.INSTANCE.toAgricolo(p).getPrezzo() * 1000) * tonnellate;
+
             }
         }
 
@@ -185,21 +186,11 @@ public class DashboardController {
             int superficie = MapperAll.INSTANCE.toSivicolture(p).getSuperficie();
             Integer giorniCrescita = MapperAll.INSTANCE.toSivicolture(p).getGiorniCrescita();
 
-            if(giorniCrescita!=null){
                 int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie, giorniCrescita, tempo.getPrecipitazioni(), tempo.getUmidita(), tempo.getTemperatura());
                 tonnellateList.add(tonnellate);
                 guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
                 tonnellateGuadagno.add(guadagnoperProdotto);
                 totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
-            }else{
-                int tonnellate = Production.calcolaProduzioneSilvicoltura(superficie, 0, tempo.getPrecipitazioni(), tempo.getUmidita(), tempo.getTemperatura());
-                tonnellateList.add(tonnellate);
-                guadagnoperProdotto = (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
-                tonnellateGuadagno.add(guadagnoperProdotto);
-                totaleprodotti += (MapperAll.INSTANCE.toSivicolture(p).getPrezzo() * tonnellate);
-
-            }
-
 
         }
 
