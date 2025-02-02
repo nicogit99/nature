@@ -1,0 +1,191 @@
+<div id="wrapper">
+    <div th:insert="header"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-6 col-md-7 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Guadagno Annuale </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="sommatotale"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-euro-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+
+
+                    <div class="col-xl-3 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Umidità </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="umiditaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precipitazioni Card -->
+
+                    <!-- Temperatura Card -->
+                    <div class="col-xl-3 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Temperatura </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="temperaturaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Pending Requests Card Example -->
+
+            </div>
+
+
+
+
+            <!-- mettere tutti i grafici-->
+            <div xmlns:th="http://www.thymeleaf.org">
+                <div class="row">
+
+                    <!-- Card per il grafico a barre -->
+                    <div class="col-xl-6 col-lg-2">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary"> Estrazione annua</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-bar position-relative">
+                                    <!-- Loader circolare per il grafico a barre, centrato -->
+                                    <div class="circle-loader" id="loaderBarChart"></div>
+                                    <canvas id="myBarChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
+                                </div>
+                                <hr>
+                                Guadagno totale per tipo Minerale
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card per il grafico a torta -->
+                    <div class="col-xl-6 col-lg-2">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Percentuale guadagno</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie position-relative">
+                                    <!-- Loader circolare per il grafico a torta, centrato -->
+                                    <div class="circle-loader" id="loaderPieChart"></div>
+                                    <canvas id="myPieChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
+                                </div>
+                                <hr>
+                                Guadagno totale in percentuale
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tabella -->
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card shadow">
+                            <div class="table-responsive">
+                                <!-- Loader della tabella -->
+                                <div class="circle-loader" id="loaderDataTable"></div> <!-- Loader Tabella -->
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="display: none;">
+                                    <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>quantita</th>
+                                        <th>Prezzo €</th>
+                                        <th>profondita</th>
+                                        <th>purezza %</th>
+                                        <th>Tonnellate €</th>
+                                        <th>Guadagno Totale</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Section placed next to the table -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <h5 class="card-title">Aggiungi Minerale</h5>
+                                <form th:action="@{/submitFormMinerali}" th:object="${minerale}" method="post">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" class="form-control" id="nome" name="nome" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipo">Tipo</label>
+                                        <input type="text" class="form-control" id="tipo" name="tipo" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prezzo">Prezzo (€)</label>
+                                        <input type="number" class="form-control" id="prezzo" name="prezzo" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="giornicrescita">Quantita</label>
+                                        <input type="text" class="form-control" id="giornicrescita" name="giornicrescita" required />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Invia</button>
+                                    <p th:text="${message}"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- End of Main Content -->
+    <script th:src="@{/js/minerali/minerali.js}"></script>
+</div>
+
+<!-- End of Content Wrapper -->
+<div th:insert="footer"></div>
+</div>
