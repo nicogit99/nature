@@ -8,9 +8,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Getter
@@ -21,7 +23,9 @@ import java.util.Random;
 @Scope("singleton")
 public class Tempo {
 
-    Random rand = new Random();
+    private Random rand = new Random();
+
+    private List<Integer> valori = new ArrayList<>();
 
     @Min(200)
     @Max(800)
@@ -38,21 +42,29 @@ public class Tempo {
     private boolean datiPronti = false; // Stato che indica se i dati meteo sono pronti
 
     public Tempo() {
+        aggiornaValoriMeteo();
+        this.datiPronti = true;
+    }
+
+    @PostConstruct
+    public void init() {
+        // Imposta i valori iniziali
+        aggiornaValoriMeteo();
+    }
+
+    // Metodo per aggiornare i valori del tempo
+    @Scheduled(fixedRate = 20000) // Esegui ogni 5 secondi (5000 millisecondi)
+    public void aggiornaValoriMeteo() {
         setPrecipitazioni(rand.nextInt(601) + 200);  // 200 - 800
         setUmidita(rand.nextInt(41) + 40);  // 40 - 80
         setTemperatura(rand.nextInt(26) + 10);  // 10 - 35
-
-        this.datiPronti = true;
+        valori.clear();
+        valori.add(precipitazioni);
+        valori.add(umidita);
+        valori.add(temperatura);
     }
 
     public boolean areDatiPronti() {
         return datiPronti;
-    }
-
-    @PostConstruct
-    @Scheduled(fixedRate = 4000)
-    public void creaDinuovo() {
-        Tempo newTempo = new Tempo();
-        // Genera nuovi dati meteo periodicamente
     }
 }

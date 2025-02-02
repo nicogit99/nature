@@ -13,7 +13,80 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Agricolo</h1>
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-6 col-md-7 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Guadagno Annuale </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="sommatotale"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-euro-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+
+
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Umidità </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="umiditaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precipitazioni Card -->
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Precipitazioni</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="precipitazioniValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Temperatura Card -->
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Temperatura </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="temperaturaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+
+
+                    <!-- Pending Requests Card Example -->
+
+                </div>
+
+
+
 
                 <!-- mettere tutti i grafici-->
                 <div xmlns:th="http://www.thymeleaf.org">
@@ -69,11 +142,11 @@
                                         <tr>
                                             <th>Nome</th>
                                             <th>Tipo</th>
-                                            <th>Prezzo €</th>
+                                            <th>Prezzo</th>
                                             <th>giorniCrescita</th>
                                             <th>Superficie(in ettari)</th>
                                             <th>Tonnellate</th>
-                                            <th>Guadagno Totale €</th>
+                                            <th>Guadagno Totale</th>
                                         </tr>
                                         </thead>
                                         <tbody>

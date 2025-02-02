@@ -15,10 +15,74 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Allevamento</h1>
-                <p class="mb-4">Chart.js is a third-party plugin used to generate charts in this theme.
-                    The charts below have been customized. For further customization options, please visit the
-                    <a target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js documentation</a>.
-                </p>
+
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-6 col-md-7 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Guadagno Annuale </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="sommatotale"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-euro-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+
+
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Umidità </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="umiditaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precipitazioni Card -->
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Precipitazioni</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="precipitazioniValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Temperatura Card -->
+                    <div class="col-xl-2 col-md-7 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2 text-center">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Temperatura </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="temperaturaValore"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
 
                 <!-- mettere tutti i grafici-->
                 <div xmlns:th="http://www.thymeleaf.org">
@@ -27,14 +91,15 @@
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Produzione Annualo</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-bar">
+                                        <div class="circle-loader" id="loaderBarChart"></div>
                                         <canvas id="myBarChart"></canvas>
                                     </div>
                                     <hr>
-                                    Grafico a torta
+                                    Guadagno totale per tipo di animale
 
                                 </div>
                             </div>
@@ -43,10 +108,11 @@
                         <div class="col-xl-6 col-lg-2"  xmlns:th="http://www.thymeleaf.org" >
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Percentuale guadagno per tipologia animale</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4">
+                                    <div class="circle-loader" id="loaderPieChart"></div>
+                                    <div class="chart-pie position-relative">
                                         <canvas id="myPieChart"></canvas>
                                     </div>
                                     <hr>
@@ -59,30 +125,30 @@
 
                     </div>
                     <div ></div>
-                    <div>
-                        <div class="card shadow ">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="80%" cellspacing="0"  >
-                                    <thead>
-                                    <tr>
-                                        <th>Tipo</th>
-                                        <th>Prezzo €</th>
-                                        <th>quantita</th>
-                                        <th>Tonnellate</th>
-                                        <th>Guadagno Totale €</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12">
+                            <div class="card shadow">
+                                <div class="table-responsive">
+                                    <!-- Loader della tabella -->
+                                    <div class="circle-loader" id="loaderDataTable"></div> <!-- Loader Tabella -->
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="display: none;">
+                                        <thead>
+                                        <tr>
 
-                                    </tbody>
+                                            <th>Tipo</th>
+                                            <th>Prezzo €</th>
+                                            <th>quantita</th>
+                                            <th>Tonnellate</th>
+                                            <th>Guadagno Totale €</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-
-
-                    </div>
-
                 </div>
 
 

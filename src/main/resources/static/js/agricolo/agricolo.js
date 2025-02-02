@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
                 document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
                 document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
-                loaderVisible=true;
+                loaderVisible = true;
             }
 
             const response = await fetch("/naturlink/agricolo/datatable-framments");
@@ -22,11 +22,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const data = await response.json();
+            console.log(data)
 
             const tableBody = document.querySelector("#dataTable tbody");
             tableBody.innerHTML = ""; // Svuotare la tabella
 
-            const { prodotti, tonnellateList = [], tonnellateGuadagno = [] } = data;
+            const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo=[] } = data;
+
+
+
+
 
             prodotti.forEach((prodotto, index) => {
                 const row = document.createElement("tr");
@@ -34,11 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 row.appendChild(createTableCell(nome));  // Nome
                 row.appendChild(createTableCell(tipo));  // Tipo
-                row.appendChild(createTableCell(prezzo)); // Prezzo
+                row.appendChild(createTableCell(prezzo+"€")); // Prezzo
                 row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-                row.appendChild(createTableCell(superficie)); // Superficie
+                row.appendChild(createTableCell(superficie +"ha")); // Superficie
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
-                row.appendChild(createTableCell(tonnellateGuadagno[index] || 'N/A'));  // Guadagno
+                row.appendChild(createTableCell(tonnellateGuadagno[index]+ "€" || 'N/A'));  // Guadagno
 
                 tableBody.appendChild(row);
             });
@@ -46,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
 
-            // Nascondi i loader e mostra i grafici e la tabella dopo 10 secondi
+
             setTimeout(() => {
                 loaderVisible = false;
                 document.getElementById("loaderBarChart").style.display = "none";
@@ -55,11 +60,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("myPieChart").style.display = "block";
                 document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
                 document.getElementById("loaderDataTable").style.display = "none";  // Nascondi il loader della tabella
-            }, 10000);  // 10 secondi di attesa prima di mostrare i grafici e la tabella
+                document.getElementById("precipitazioniValore").textContent = Meteo[0]+"mm" || 'N/A';
+                document.getElementById("umiditaValore").textContent = Meteo[1]+"%"|| 'N/A';
+                document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
+                // Calcola e mostra il sommatotale dopo che i loader sono spariti
+                const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
+                document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
+            }, 20000);
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
         }
+    }
+
+    // Funzione per calcolare la somma totale
+    function calcolaSommaTotale(tonnellateGuadagno) {
+        const list1 = tonnellateGuadagno.slice(0, 3);
+        const list2 = tonnellateGuadagno.slice(3, 6);
+        const list3 = tonnellateGuadagno.slice(6, 9);
+
+        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+
+        const sommaList1 = somma(list1);
+        const sommaList2 = somma(list2);
+        const sommaList3 = somma(list3);
+
+        return sommaList1 + sommaList2 + sommaList3;
     }
 
     // Funzione per formattare i numeri
@@ -91,33 +117,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const cell = document.createElement("td");
         cell.textContent = content;
         return cell;
-    }
-
-    // Funzione per calcolare la percentuale per i grafici
-    function percentuale(tonnellateGuadagno) {
-        const list1 = tonnellateGuadagno.slice(0, 3);
-        const list2 = tonnellateGuadagno.slice(3, 6);
-        const list3 = tonnellateGuadagno.slice(6, 9);
-
-        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
-
-        const sommaList1 = somma(list1);
-        const sommaList2 = somma(list2);
-        const sommaList3 = somma(list3);
-
-        const sommaTotale = sommaList1 + sommaList2 + sommaList3;
-
-        aggiornaGraficoChart(sommaList1, sommaList2, sommaList3, sommaTotale);
-
-        let percentualeList1 = sommaTotale ? (sommaList1 / sommaTotale) * 100 : 0;
-        let percentualeList2 = sommaTotale ? (sommaList2 / sommaTotale) * 100 : 0;
-        let percentualeList3 = sommaTotale ? (sommaList3 / sommaTotale) * 100 : 0;
-
-        percentualeList1 = Math.floor(percentualeList1);
-        percentualeList2 = Math.floor(percentualeList2);
-        percentualeList3 = Math.floor(percentualeList3);
-
-        return [percentualeList1, percentualeList2, percentualeList3];
     }
 
     // Funzione per aggiornare il grafico a barre
@@ -216,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["Pesca", "Agricoltura", "Sivilcoltura"],
+                labels: ["frutta", "verdura", "ortaggi"],
                 datasets: [{
                     data: percentualeList,
                     backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc'],
@@ -249,9 +248,36 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Funzione per calcolare la percentuale per i grafici
+    function percentuale(tonnellateGuadagno) {
+        const list1 = tonnellateGuadagno.slice(0, 3);
+        const list2 = tonnellateGuadagno.slice(3, 6);
+        const list3 = tonnellateGuadagno.slice(6, 9);
+
+        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+
+        const sommaList1 = somma(list1);
+        const sommaList2 = somma(list2);
+        const sommaList3 = somma(list3);
+
+        const sommaTotale = sommaList1 + sommaList2 + sommaList3;
+
+        aggiornaGraficoChart(sommaList1, sommaList2, sommaList3, sommaTotale);
+
+        let percentualeList1 = sommaTotale ? (sommaList1 / sommaTotale) * 100 : 0;
+        let percentualeList2 = sommaTotale ? (sommaList2 / sommaTotale) * 100 : 0;
+        let percentualeList3 = sommaTotale ? (sommaList3 / sommaTotale) * 100 : 0;
+
+        percentualeList1 = Math.floor(percentualeList1);
+        percentualeList2 = Math.floor(percentualeList2);
+        percentualeList3 = Math.floor(percentualeList3);
+
+        return [percentualeList1, percentualeList2, percentualeList3];
+    }
+
     // Carica i prodotti inizialmente
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 10 secondi
-    setInterval(caricaProdotti, 10000);
+    setInterval(caricaProdotti, 20000);
 });

@@ -2,7 +2,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
+    let loaderVisible = false;
         try {
+
+           if (!loaderVisible) {
+                        // Mostra i loader circolari prima di caricare i grafici
+                        document.getElementById("loaderBarChart").style.display = "block";
+                        document.getElementById("loaderPieChart").style.display = "block";
+                        document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
+                        document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
+                        document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
+                        document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
+                        loaderVisible=true;
+                    }
+
             // Fetch dei dati tramite l'API fetch
             const response = await fetch("/naturlink/allevamento/datatable-framments");
 
@@ -10,6 +23,23 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+
+            setTimeout(() => {
+                                       loaderVisible = false;
+             document.getElementById("loaderBarChart").style.display = "none";
+              document.getElementById("loaderPieChart").style.display = "none";
+              document.getElementById("myBarChart").style.display = "block";
+                document.getElementById("myPieChart").style.display = "block";
+                document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
+                  document.getElementById("loaderDataTable").style.display = "none";
+                  document.getElementById("precipitazioniValore").textContent = Meteo[0]+"mm" || 'N/A';
+                   document.getElementById("umiditaValore").textContent = Meteo[1]+"%"|| 'N/A';
+                    document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
+                    const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
+                     document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
+                        }, 20000);
+
+
 
             // Parsing dei dati JSON
             const data = await response.json();
@@ -19,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
             tableBody.innerHTML = ""; // Svuotare il corpo della tabella
 
             // Destrutturazione dei dati per una lettura più semplice
-            const { animali, tonnellateList = [], tonnellateGuadagno = [] } = data;
+            const { animali, tonnellateList = [], tonnellateGuadagno = [] , Meteo=[]} = data;
 
             console.log(tonnellateGuadagno);  // Log per controllo
 
@@ -44,6 +74,11 @@ document.addEventListener("DOMContentLoaded", function() {
             aggiornaGrafico(tonnellateGuadagno);
 
 
+
+
+
+
+
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
         }
@@ -51,6 +86,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 //  funzioni
+ // Funzione per calcolare la somma totale
+    function calcolaSommaTotale(tonnellateGuadagno) {
+        const list1 = tonnellateGuadagno.slice(0, 3);
+        const list2 = tonnellateGuadagno.slice(3, 6);
+        const list3 = tonnellateGuadagno.slice(6, 9);
+
+        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+
+        const sommaList1 = somma(list1);
+        const sommaList2 = somma(list2);
+        const sommaList3 = somma(list3);
+
+        return sommaList1 + sommaList2 + sommaList3;
+    }
+
+
+
 
 function number_format(number, decimals, dec_point, thousands_sep) {
   // *     example: number_format(1234.56, 2, ',', ' ');
@@ -264,6 +316,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti e il grafico ogni 10 secondi
-    setInterval(caricaProdotti, 10000);
+    setInterval(caricaProdotti, 20000);
 
 });

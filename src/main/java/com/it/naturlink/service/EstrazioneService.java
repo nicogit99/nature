@@ -28,4 +28,8 @@ public class EstrazioneService  implements MineraliApiDelegate {
     }
 
 
+    public void mineraleP(Minerale minerale) {
+
+        estrazioneRepository.save(MapperAll.INSTANCE.toEstrazioneMineraria(minerale));
+    }
 }

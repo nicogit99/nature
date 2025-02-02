@@ -73,6 +73,7 @@ public class DashboardController {
     @GetMapping("agricolo/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentAgricolo() {
         ResponseEntity<List<Prodotto>> prodotti = agricoloService.prodottiGet();
+        List<Integer> valoriMeteo = tempo.getValori();
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
         int guadagnoperProdotto = 0;
@@ -96,13 +97,15 @@ public class DashboardController {
             }
         }
 
+
         Map<String, Object> response = new HashMap<>();
         response.put("tonnellateGuadagno", tonnellateGuadagno);
         response.put("tonnellateList", tonnellateList);
         response.put("prodotti", prodotti.getBody());
-
+        response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
+
     @PostMapping("/submitFormAgricolo")
     public ModelAndView submitFormAgricolo(@ModelAttribute Prodotto agricolo, Model model) {
         agricoloService.prodottoPost(agricolo);
@@ -110,30 +113,24 @@ public class DashboardController {
         return new ModelAndView("redirect:/agricolo");
     }
 
-    @PostMapping("/submitFormAllevamento")
-    public ModelAndView submitFormAllevamento(@ModelAttribute Animale animale, Model model) {
-        allevamentoService.animalePost(animale);
-        model.addAttribute("allevamento", "salvato");
-        return new ModelAndView("redirect:/allevamento");
-    }
 
     @PostMapping("/submitFormPesca")
     public ModelAndView submitFormPesca(@ModelAttribute Pesca pesca, Model model) {
-        pescaService.pescaPost(pesca);
+        pescaService.pescaP(pesca);
         model.addAttribute("pesca", "salvato");
         return new ModelAndView("redirect:/pesca");
     }
 
     @PostMapping("/submitFormSivicoltura")
     public ModelAndView submitFormSivicoltura(@ModelAttribute Sivicoltura sivicoltura, Model model) {
-        sivicolturaService.sivicolturaPost(sivicoltura);
+        sivicolturaService.sivicoP(sivicoltura);
         model.addAttribute("sivicoltura", "salvato");
         return new ModelAndView("redirect:/sivicoltura");
     }
 
     @PostMapping("/submitFormMinerali")
     public ModelAndView submitFormMinerali(@ModelAttribute Minerale minerale, Model model) {
-        estrazioneService.mineralePost(minerale);
+        estrazioneService.mineraleP(minerale);
         model.addAttribute("minerale", "salvato");
         return new ModelAndView("redirect:/minerali");
     }
@@ -141,6 +138,7 @@ public class DashboardController {
 
     @GetMapping("pesca/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentPesca() {
+        List<Integer> valoriMeteo = tempo.getValori();
         ResponseEntity<List<Pesca>> pesci = pescaService.pesciGet();
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
@@ -170,7 +168,7 @@ public class DashboardController {
         response.put("tonnellateGuadagno", tonnellateGuadagno);
         response.put("tonnellateList", tonnellateList);
         response.put("pesci", pesci.getBody());
-
+        response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
 
@@ -179,6 +177,7 @@ public class DashboardController {
         ResponseEntity<List<Sivicoltura>> sivicoltura = sivicolturaService.sivicolturaGet();
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
+        List<Integer> valoriMeteo = tempo.getValori();
         int guadagnoperProdotto = 0;
         int totaleprodotti = 0;
 
@@ -197,13 +196,14 @@ public class DashboardController {
         response.put("tonnellateGuadagno", tonnellateGuadagno);
         response.put("tonnellateList", tonnellateList);
         response.put("sivicoltura", sivicoltura.getBody());
-
+        response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("allevamento/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentAllevamento() {
         ResponseEntity<List<Animale>> animali = allevamentoService.animaliGet();
+        List<Integer> valoriMeteo = tempo.getValori();
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
         int guadagnoperProdotto = 0;
@@ -221,15 +221,17 @@ public class DashboardController {
         response.put("tonnellateGuadagno", tonnellateGuadagno);
         response.put("tonnellateList", tonnellateList);
         response.put("animali", animali.getBody());
-
+        response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("minerali/datatable-framments")
     public ResponseEntity<Map<String, Object>> getTableFragmentMinerali() {
         ResponseEntity<List<Minerale>> minerali = estrazioneService.mineraliGet();
+
         List<Integer> tonnellateList = new ArrayList<>();
         List<Integer> tonnellateGuadagno = new ArrayList<>();
+        List<Integer> valoriMeteo = tempo.getValori();
         int guadagnoperProdotto = 0;
         int totaleprodotti = 0;
 
@@ -245,7 +247,7 @@ public class DashboardController {
         response.put("tonnellateGuadagno", tonnellateGuadagno);
         response.put("tonnellateList", tonnellateList);
         response.put("minerali", minerali.getBody());
-
+        response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
 

@@ -25,4 +25,8 @@ public class PescaService  implements PesciApiDelegate {
             return new ResponseEntity<>(pescaList, HttpStatusCode.valueOf(400));
         return ResponseEntity.ok(pescaList);
     }
+
+    public void pescaP(Pesca pesca) {
+        pesceRepository.save(MapperAll.INSTANCE.toPesce(pesca));
+    }
 }

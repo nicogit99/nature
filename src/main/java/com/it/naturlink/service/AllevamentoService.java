@@ -38,8 +38,5 @@ public class AllevamentoService implements AnimaliApiDelegate {
         return AnimaliApiDelegate.super.animaliIdPut(id, animale);
     }
 
-    @Override
-    public ResponseEntity<Animale> animaliPost(Animale animale) {
-        return AnimaliApiDelegate.super.animaliPost(animale);
-    }
+
 }
