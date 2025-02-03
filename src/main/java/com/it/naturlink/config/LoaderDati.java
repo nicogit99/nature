@@ -373,7 +373,7 @@ public class LoaderDati {
 
 
 
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 10000)
     public void loadDati() {
         log.info("Inizio reset e caricamento dati");
 
@@ -388,39 +388,39 @@ public class LoaderDati {
     }
 
 
-    private void resetta() {
-        log.info("Resettando dati");
-
-        try {
-            // Rimuovi i dati dalle tabelle
-            agricoloRepository.deleteAll();
-            sivicoltureRepository.deleteAll();
-            estrazioneRepository.deleteAll();
-            allevamentoRepository.deleteAll();
-            pesceRepository.deleteAll();
-
-            // Reset delle sequenze specifiche per ogni tabella
-            resetSequenza("sequenza_id_agricolo");
-            resetSequenza("sequenza_id_allevamento");
-            resetSequenza("sequenza_id_minerali");
-            resetSequenza("sequenza_id_pesce");
-            resetSequenza("sequenza_id_sivicolture");
-
-        } catch (Exception e) {
-            log.error("Errore durante il reset dei dati: " + e.getMessage());
-        }
-    }
-
-    private void resetSequenza(String nomeSequenza) {
-        try {
-            String queryStr = "ALTER SEQUENCE " + nomeSequenza + " RESTART WITH 1";
-            Query query = entityManager.createNativeQuery(queryStr);
-            query.executeUpdate();
-            log.info("Sequenza " + nomeSequenza + " resettata con successo.");
-        } catch (Exception e) {
-            log.error("Errore durante il reset della sequenza " + nomeSequenza + ": " + e.getMessage());
-        }
-    }
+//    private void resetta() {
+//        log.info("Resettando dati");
+//
+//        try {
+//            // Rimuovi i dati dalle tabelle
+//            agricoloRepository.deleteAll();
+//            sivicoltureRepository.deleteAll();
+//            estrazioneRepository.deleteAll();
+//            allevamentoRepository.deleteAll();
+//            pesceRepository.deleteAll();
+//
+//            // Reset delle sequenze specifiche per ogni tabella
+//            resetSequenza("sequenza_id_agricolo");
+//            resetSequenza("sequenza_id_allevamento");
+//            resetSequenza("sequenza_id_minerali");
+//            resetSequenza("sequenza_id_pesce");
+//            resetSequenza("sequenza_id_sivicolture");
+//
+//        } catch (Exception e) {
+//            log.error("Errore durante il reset dei dati: " + e.getMessage());
+//        }
+//    }
+//
+//    private void resetSequenza(String nomeSequenza) {
+//        try {
+//            String queryStr = "ALTER SEQUENCE " + nomeSequenza + " RESTART WITH 1";
+//            Query query = entityManager.createNativeQuery(queryStr);
+//            query.executeUpdate();
+//            log.info("Sequenza " + nomeSequenza + " resettata con successo.");
+//        } catch (Exception e) {
+//            log.error("Errore durante il reset della sequenza " + nomeSequenza + ": " + e.getMessage());
+//        }
+//    }
 
 }
 

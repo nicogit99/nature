@@ -32,4 +32,8 @@ public class EstrazioneService  implements MineraliApiDelegate {
 
         estrazioneRepository.save(MapperAll.INSTANCE.toEstrazioneMineraria(minerale));
     }
+
+    public void delete(int id) {
+        estrazioneRepository.deleteById(id);
+    }
 }

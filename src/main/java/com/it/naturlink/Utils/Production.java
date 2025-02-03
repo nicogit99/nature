@@ -55,7 +55,7 @@ public class Production {
     // Metodo per calcolare la produzione mineraria in tonnellate
     public static int calcolaProduzioneMineraria(int quantità, int qualitàMinerale, int profondita) {
         double fattoreQualità = qualitàMinerale / 100.0;
-        double fattoreProfondita = (profondita <= 100) ? 1.0 : (profondita <= 200) ? 0.9 : 0.8;
+        double fattoreProfondita = (profondita >= 2000) ? 5.0 : (profondita <= 200) ? 1.9 : 0.8;
 
         return (int)(quantità * fattoreQualità * fattoreProfondita * 2.0);
     }
@@ -107,6 +107,12 @@ public class Production {
                 break;
             case "ovino":
                 fattoreTipoAnimale = 2;
+                break;
+            case "caprini":
+                fattoreTipoAnimale = 1;
+                break;
+            case "equini":
+                fattoreTipoAnimale = 1;
                 break;
             default:
                 fattoreTipoAnimale = 1;

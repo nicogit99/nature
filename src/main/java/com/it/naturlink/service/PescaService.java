@@ -29,4 +29,8 @@ public class PescaService  implements PesciApiDelegate {
     public void pescaP(Pesca pesca) {
         pesceRepository.save(MapperAll.INSTANCE.toPesce(pesca));
     }
+
+    public void delete(int id) {
+        pesceRepository.deleteById(id);
+    }
 }

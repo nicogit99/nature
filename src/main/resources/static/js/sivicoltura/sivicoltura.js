@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             sivicoltura.forEach((sivicoltura, index) => {
                 const row = document.createElement("tr");
-                const { nome, tipo, prezzo, giorniCrescita, superficie } = sivicoltura;
+                const { id,nome, tipo, prezzo, giorniCrescita, superficie } = sivicoltura;
 
                 row.appendChild(createTableCell(nome));  // Nome
                 row.appendChild(createTableCell(tipo));  // Tipo

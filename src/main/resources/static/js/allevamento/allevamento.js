@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Creare le righe della tabella
             animali.forEach((animale, index) => {
                 const row = document.createElement("tr");
-                const { tipo, prezzo, quantita } = animale;
+                const {id,tipo, prezzo, quantita } = animale;
 
                 row.appendChild(createTableCell(tipo));  // Tipo
                 row.appendChild(createTableCell(prezzo)); // Prezzo
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Calcola e mostra la somma totale
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 2000);
+            }, 10000);
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);

@@ -1,48 +1,78 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
-    async function caricaProdotti() {
-        let loaderVisible = false;
-        try {
-            if (!loaderVisible) {
-                // Mostra i loader circolari prima di caricare i grafici
-                document.getElementById("loaderBarChart").style.display = "block";
-                document.getElementById("loaderPieChart").style.display = "block";
-                document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
-                document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
-                loaderVisible = true;
-            }
+async function caricaProdotti() {
+    let loaderVisible = false;
+    try {
+        if (!loaderVisible) {
+            // Mostra i loader circolari prima di caricare i grafici
+            document.getElementById("loaderBarChart").style.display = "block";
+            document.getElementById("loaderPieChart").style.display = "block";
+            document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
+            document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
+            document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
+            document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
+            loaderVisible = true;
+        }
 
-            const response = await fetch("/naturlink/agricolo/datatable-framments");
+        const response = await fetch("/naturlink/agricolo/datatable-framments");
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-            const data = await response.json();
-            console.log(data);
+        const data = await response.json();
+        console.log(data);
 
-            const tableBody = document.querySelector("#dataTable tbody");
-            tableBody.innerHTML = ""; // Svuotare la tabella
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = ""; // Svuotare la tabella
 
-            const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
+        const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
 
-            prodotti.forEach((prodotto, index) => {
-                const row = document.createElement("tr");
-                const { nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
+        prodotti.forEach((prodotto, index) => {
+            const row = document.createElement("tr");
+            const { id, nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
 
-                row.appendChild(createTableCell(nome));  // Nome
-                row.appendChild(createTableCell(tipo));  // Tipo
-                row.appendChild(createTableCell(prezzo + "€")); // Prezzo
-                row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-                row.appendChild(createTableCell(superficie )); // Superficie
-                row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
-                row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
+            row.appendChild(createTableCell(nome));  // Nome
+            row.appendChild(createTableCell(tipo));  // Tipo
+            row.appendChild(createTableCell(prezzo + "€")); // Prezzo
+            row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
+            row.appendChild(createTableCell(superficie)); // Superficie
+            row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
+            row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
 
-                tableBody.appendChild(row);
+            // Aggiungi un bottone "Cancella"
+            const deleteButtonCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Cancella";
+            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
+
+            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
+            deleteButton.addEventListener("click", function () {
+                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
+                fetch(`/naturlink/agricolo/${id}`, {  // Correzione: interpolazione della variabile id
+                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
+                    // Non includere 'Content-Type' in questo caso
+                })
+                    .then(response => {
+                        if (response.ok) {
+
+                            row.remove();
+                            caricaProdotti();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Errore nella richiesta DELETE:", error);
+                        alert("Errore nella richiesta.");
+                    });
             });
+
+            deleteButtonCell.appendChild(deleteButton);
+            row.appendChild(deleteButtonCell);
+
+            tableBody.appendChild(row);
+        });
+
 
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
@@ -61,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Calcola e mostra il sommatotale dopo che i loader sono spariti
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 2000);
+            }, 10000);
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -274,6 +304,6 @@ document.addEventListener("DOMContentLoaded", function() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
-    setInterval(caricaProdotti, 20000);
+    setInterval(caricaProdotti, 10000);
 
 });

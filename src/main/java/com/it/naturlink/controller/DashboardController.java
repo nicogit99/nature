@@ -157,7 +157,7 @@ public class DashboardController {
                 tonnellateGuadagno.add(guadagnoperProdotto);
                 totaleprodotti += (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
             } else {
-                int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(), profondita, 0);
+                int tonnellate = Production.calcolaProduzionePesca(tempo.getTemperatura(), 0, 0);
                 tonnellateList.add(tonnellate);
                 guadagnoperProdotto = (MapperAll.INSTANCE.toPesce(p).getPrezzo() * tonnellate);
                 tonnellateGuadagno.add(guadagnoperProdotto);
@@ -238,11 +238,20 @@ public class DashboardController {
         int totaleprodotti = 0;
 
         for (Minerale p : minerali.getBody()) {
-            int tonnellate = Production.calcolaProduzioneMineraria(p.getQuantita(), p.getPurezza(), p.getProfondita());
-            tonnellateList.add(tonnellate);
-            guadagnoperProdotto = (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
-            tonnellateGuadagno.add(guadagnoperProdotto);
-            totaleprodotti += (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+
+            if(p.getQuantita()!=null){
+                int tonnellate = Production.calcolaProduzioneMineraria(p.getQuantita(), p.getPurezza(), p.getProfondita());
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+            }else {
+                int tonnellate = Production.calcolaProduzioneMineraria(0, p.getPurezza(), p.getProfondita());
+                tonnellateList.add(tonnellate);
+                guadagnoperProdotto = (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+                tonnellateGuadagno.add(guadagnoperProdotto);
+                totaleprodotti += (MapperAll.INSTANCE.toEstrazioneMineraria(p).getPrezzo() * tonnellate);
+            }
         }
 
         Map<String, Object> response = new HashMap<>();
@@ -252,6 +261,41 @@ public class DashboardController {
         response.put("Meteo",valoriMeteo);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("agricolo/{id}")
+    public ModelAndView eliminaProdotto(@PathVariable int id) {
+       agricoloService.delete(id);
+
+        return new ModelAndView("redirect:/agricolo");
+    }
+
+    @DeleteMapping("minerali/{id}")
+    public ModelAndView eliminaminerale(@PathVariable int id) {
+        estrazioneService.delete(id);
+
+        return new ModelAndView("redirect:/minerali");
+    }
+
+    @DeleteMapping("pesca/{id}")
+    public ModelAndView eliminaPece(@PathVariable int id) {
+        pescaService.delete(id);
+
+        return new ModelAndView("redirect:/pesca");
+    }
+
+    @DeleteMapping("sivicoltura/{id}")
+    public ModelAndView eliminasivicoltura(@PathVariable int id) {
+        sivicolturaService.delete(id);
+
+        return new ModelAndView("redirect:/sivicoltura");
+    }
+
+
+
+
+
+
+
 
     @GetMapping("json")
     public ResponseEntity<List<Pesca>> Sivicoltura() {

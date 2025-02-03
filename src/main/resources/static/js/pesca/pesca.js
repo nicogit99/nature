@@ -2,31 +2,41 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
-        try {
-            // Fetch dei dati tramite l'API fetch
+      let loaderVisible = false;
+              try {
+                  if (!loaderVisible) {
+                      // Mostra i loader circolari prima di caricare i grafici
+                      document.getElementById("loaderBarChart").style.display = "block";
+                      document.getElementById("loaderPieChart").style.display = "block";
+                      document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
+                      document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
+                      document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
+                      document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
+                      loaderVisible = true;
+                  }
+
             const response = await fetch("/naturlink/pesca/datatable-framments");
 
-            // Verifica se la risposta è OK
             if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+               throw new Error('Network response was not ok');
+                }
 
-            // Parsing dei dati JSON
-            const data = await response.json();
+             const data = await response.json();
+              console.log(data);
 
             // Ottenere i riferimenti alla tabella
             const tableBody = document.querySelector("#dataTable tbody");
             tableBody.innerHTML = ""; // Svuotare il corpo della tabella
 
             // Destrutturazione dei dati per una lettura più semplice
-            const { pesci, tonnellateList = [], tonnellateGuadagno = [] } = data;
+            const { pesci, tonnellateList = [], tonnellateGuadagno = [],Meteo=[] } = data;
 
             console.log(tonnellateGuadagno);  // Log per controllo
 
             // Creare le righe della tabella
            pesci.forEach((pesci, index) => {
                 const row = document.createElement("tr");
-                const { nome, tipo, stockPesce, profondita,prezzo } = pesci;
+                const { id,nome, tipo, stockPesce, profondita,prezzo } = pesci;
 
                 row.appendChild(createTableCell(nome));  // Nome
                 row.appendChild(createTableCell(tipo));
@@ -45,11 +55,33 @@ document.addEventListener("DOMContentLoaded", function() {
             // Chiamata per aggiornare il grafico a torta
             aggiornaGrafico(tonnellateGuadagno);
 
+             setTimeout(() => {
+               loaderVisible = false;
+               document.getElementById("loaderBarChart").style.display = "none";
+                document.getElementById("loaderPieChart").style.display = "none";
+                 document.getElementById("myBarChart").style.display = "block";
+                document.getElementById("myPieChart").style.display = "block";
+                document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
+                document.getElementById("loaderDataTable").style.display = "none";  // Nascondi il loader della tabella
+                  document.getElementById("umiditaValore").textContent = Meteo[1]+"%"|| 'N/A';
+                   document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
+                   const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
+                     document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
+                        }, 10000);  // Ridotto a 2 secondi per velocizzare il caricamento
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
         }
     }
+
+   // Funzione per calcolare la somma totale
+    function calcolaSommaTotale(tonnellateGuadagno) {
+        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+
+        const sommaTotale = somma(tonnellateGuadagno);
+        return sommaTotale;
+    }
+
 
 
 //  funzioni
@@ -166,7 +198,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: sommaTotale,
+                            max: 400000,
                             maxTicksLimit: 5, // Limita il numero di tick sull'asse Y
                             padding: 20, // Aggiunge spazio tra i tick sull'asse Y
                             // Include un simbolo di valuta nel label
@@ -257,10 +289,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         });
     }
 
-    // Chiamata iniziale per caricare i prodotti
-    caricaProdotti();
-
-    // Imposta un intervallo per aggiornare i prodotti e il grafico ogni 10 secondi
-    setInterval(caricaProdotti, 10000);
+     caricaProdotti();
+     setInterval(caricaProdotti, 10000);
 
 });

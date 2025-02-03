@@ -26,4 +26,9 @@ public class AgricoloService implements  ProdottiApiDelegate {
     public  void prodottoPost(Prodotto prodotto){
         agricoloRepository.save(MapperAll.INSTANCE.toAgricolo(prodotto));
     }
+
+    public  void delete(int id){
+        agricoloRepository.deleteById(id);
+    }
+
 }

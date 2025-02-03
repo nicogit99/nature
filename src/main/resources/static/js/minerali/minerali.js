@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    let loaderVisible = false;  // Dichiara la variabile loaderVisible
+    // Dichiara la variabile loaderVisible
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
+    let loaderVisible = false;
         try {
             if (!loaderVisible) {
                 // Mostra i loader circolari prima di caricare i grafici
@@ -32,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             minerali.forEach((minerale, index) => {
                 const row = document.createElement("tr");
-                const { nome, tipo, quantita, prezzo, profondita, purezza } = minerale;
+                const { id,nome, tipo, quantita, prezzo, profondita, purezza } = minerale;
 
                 row.appendChild(createTableCell(nome));
                 row.appendChild(createTableCell(tipo));
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
                  document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 2000);  // Ridotto a 2 secondi per velocizzare il caricamento
+            }, 1000);  // Ridotto a 2 secondi per velocizzare il caricamento
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -257,6 +258,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     caricaProdotti();
-    setInterval(caricaProdotti, 20000);
+    setInterval(caricaProdotti, 10000);
 
 });

@@ -31,4 +31,8 @@ public class SivicolturaService  implements SivicolturaApiDelegate {
     public void sivicoP(Sivicoltura sivicoltura) {
         sivicoltureRepository.save(MapperAll.INSTANCE.toSivicolture(sivicoltura));
     }
+
+    public void delete(int id) {
+        sivicoltureRepository.deleteById(id);
+    }
 }
