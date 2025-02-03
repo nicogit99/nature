@@ -41,6 +41,39 @@ document.addEventListener("DOMContentLoaded", function() {
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
                 row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
 
+                   // Aggiungi un bottone "Cancella"
+                            const deleteButtonCell = document.createElement("td");
+                            const deleteButton = document.createElement("button");
+                            deleteButton.textContent = "Cancella";
+                            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
+
+                            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
+                            deleteButton.addEventListener("click", function () {
+                                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
+                                fetch(`/naturlink/siv/${id}`, {  // Correzione: interpolazione della variabile id
+                                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
+                                    // Non includere 'Content-Type' in questo caso
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+
+                                            row.remove();
+                                            caricaProdotti();
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Errore nella richiesta DELETE:", error);
+                                        alert("Errore nella richiesta.");
+                                    });
+                            });
+
+                            deleteButtonCell.appendChild(deleteButton);
+                            row.appendChild(deleteButtonCell);
+
+
+
+
+
                 tableBody.appendChild(row);
             });
 
@@ -61,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Calcola e mostra il sommatotale dopo che i loader sono spariti
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 2000);
+            }, 10000);
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -70,18 +103,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per calcolare la somma totale
     function calcolaSommaTotale(tonnellateGuadagno) {
-        const list1 = tonnellateGuadagno.slice(0, 3);
-        const list2 = tonnellateGuadagno.slice(3, 6);
-        const list3 = tonnellateGuadagno.slice(6, 9);
+            const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
 
-        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
-
-        const sommaList1 = somma(list1);
-        const sommaList2 = somma(list2);
-        const sommaList3 = somma(list3);
-
-        return sommaList1 + sommaList2 + sommaList3;
-    }
+            const sommaTotale = somma(tonnellateGuadagno);
+            return sommaTotale;
+        }
 
     // Funzione per formattare i numeri
     function number_format(number, decimals, dec_point, thousands_sep) {

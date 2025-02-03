@@ -76,19 +76,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per calcolare la somma totale
     function calcolaSommaTotale(tonnellateGuadagno) {
-        const list1 = tonnellateGuadagno.slice(0, 1);  // Primo elemento
-        const list2 = tonnellateGuadagno.slice(1, 2);  // Secondo elemento
-        const list3 = tonnellateGuadagno.slice(2, 3);  // Terzo elemento
-        const list4 = tonnellateGuadagno.slice(3);     // Quarto elemento
+
 
         const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
 
-        const sommaList1 = somma(list1);
-        const sommaList2 = somma(list2);
-        const sommaList3 = somma(list3);
-        const sommaList4 = somma(list4);
+        const sommaList1 = somma(tonnellateGuadagno);
 
-        return sommaList1 + sommaList2 + sommaList3 + sommaList4;
+
+        return sommaList1 ;
     }
 
     // Funzione per formattare i numeri

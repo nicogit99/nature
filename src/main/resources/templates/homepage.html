@@ -12,84 +12,104 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Mercato Globale</h1>
+                <h1 class="h3 mb-4 text-gray-800 text-center font-weight-bold" style="font-size: 2.5rem; margin-top: 30px;">Mercato Globale</h1>
 
                 <!-- Aggiungere i grafici o le tabelle per l'aggiornamento dei dati -->
+                <div class="row">
+                    <!-- Prima colonna (Estrazione Mineraria) -->
+                    <div class="col-md-4">
+                        <h2>Minerario</h2>
+                        <table id="miningTable" border="1" class="table">
+                            <thead>
+                            <tr>
+                                <th>Paese</th>
+                                <th>Variazione Percentuale</th>
+                                <th>Data Aggiornamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- I dati della tabella saranno aggiornati via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                <!-- Tabella Estrazione Mineraria -->
-                <h2>Estrazione Mineraria</h2>
-                <table id="miningTable" border="1" class="table">
-                    <thead>
-                    <tr>
-                        <th>Paese</th>
-                        <th>Variazione Percentuale</th>
-                        <th>Data Aggiornamento</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- I dati della tabella saranno aggiornati via JavaScript -->
-                    </tbody>
-                </table>
+                    <!-- Seconda colonna (Allevamento) -->
+                    <div class="col-md-4">
+                        <h2>Allevamento</h2>
+                        <table id="livestockTable" border="1" class="table">
+                            <thead>
+                            <tr>
+                                <th>Paese</th>
+                                <th>Variazione Percentuale</th>
+                                <th>Data Aggiornamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- I dati della tabella saranno aggiornati via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                <!-- Tabella Allevamento -->
-                <h2>Allevamento</h2>
-                <table id="livestockTable" border="1" class="table">
-                    <thead>
-                    <tr>
-                        <th>Paese</th>
-                        <th>Variazione Percentuale</th>
-                        <th>Data Aggiornamento</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- I dati della tabella saranno aggiornati via JavaScript -->
-                    </tbody>
-                </table>
+                    <!-- Terza colonna (Silvicoltura) -->
+                    <div class="col-md-4">
+                        <h2>Silvicoltura</h2>
+                        <table id="forestryTable" border="1" class="table">
+                            <thead>
+                            <tr>
+                                <th>Paese</th>
+                                <th>Variazione Percentuale</th>
+                                <th>Data Aggiornamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- I dati della tabella saranno aggiornati via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                <!-- Tabella Silvicoltura -->
-                <h2>Silvicoltura</h2>
-                <table id="forestryTable" border="1" class="table">
-                    <thead>
-                    <tr>
-                        <th>Paese</th>
-                        <th>Variazione Percentuale</th>
-                        <th>Data Aggiornamento</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- I dati della tabella saranno aggiornati via JavaScript -->
-                    </tbody>
-                </table>
+                <!-- Seconda riga con 2 colonne -->
+                <div class="row mt-4">
+                    <!-- Prima colonna (Pesca) -->
+                    <div class="col-md-6">
+                        <h2>Pesca</h2>
+                        <table id="fishingTable" border="1" class="table">
+                            <thead>
+                            <tr>
+                                <th>Paese</th>
+                                <th>Variazione Percentuale</th>
+                                <th>Data Aggiornamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- I dati della tabella saranno aggiornati via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                <!-- Tabella Pesca -->
-                <h2>Pesca</h2>
-                <table id="fishingTable" border="1" class="table">
-                    <thead>
-                    <tr>
-                        <th>Paese</th>
-                        <th>Variazione Percentuale</th>
-                        <th>Data Aggiornamento</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- I dati della tabella saranno aggiornati via JavaScript -->
-                    </tbody>
-                </table>
+                    <!-- Seconda colonna (Agricoltura) -->
+                    <div class="col-md-6">
+                        <h2>Agricoltura</h2>
+                        <table id="agricultureTable" border="1" class="table">
+                            <thead>
+                            <tr>
+                                <th>Paese</th>
+                                <th>Variazione Percentuale</th>
+                                <th>Data Aggiornamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- I dati della tabella saranno aggiornati via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                <!-- Tabella Agricoltura -->
-                <h2>Agricoltura</h2>
-                <table id="agricultureTable" border="1" class="table">
-                    <thead>
-                    <tr>
-                        <th>Paese</th>
-                        <th>Variazione Percentuale</th>
-                        <th>Data Aggiornamento</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- I dati della tabella saranno aggiornati via JavaScript -->
-                    </tbody>
-                </table>
+                <!-- Aggiungere il grafico a barre per la variazione percentuale -->
+                <div class="container-fluid mt-4" style="max-width: 1000px; margin: 0 auto;">
+                    <h2>Grafico della Variazione Percentuale per Settore</h2>
+                    <canvas id="myChart" width="600" height="350"></canvas>
+                </div>
 
             </div>
             <!-- End of Container Fluid -->
@@ -99,3 +119,5 @@
     <script th:src="@{/js/home.js}"></script>
     <div th:insert="footer"></div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

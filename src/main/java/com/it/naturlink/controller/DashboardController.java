@@ -262,28 +262,28 @@ public class DashboardController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("agricolo/{id}")
+    @DeleteMapping("agrico/{id}")
     public ModelAndView eliminaProdotto(@PathVariable int id) {
        agricoloService.delete(id);
 
         return new ModelAndView("redirect:/agricolo");
     }
 
-    @DeleteMapping("minerali/{id}")
+    @DeleteMapping("minera/{id}")
     public ModelAndView eliminaminerale(@PathVariable int id) {
         estrazioneService.delete(id);
 
         return new ModelAndView("redirect:/minerali");
     }
 
-    @DeleteMapping("pesca/{id}")
+    @DeleteMapping("pesc/{id}")
     public ModelAndView eliminaPece(@PathVariable int id) {
         pescaService.delete(id);
 
         return new ModelAndView("redirect:/pesca");
     }
 
-    @DeleteMapping("sivicoltura/{id}")
+    @DeleteMapping("siv/{id}")
     public ModelAndView eliminasivicoltura(@PathVariable int id) {
         sivicolturaService.delete(id);
 

@@ -145,8 +145,8 @@ public class LoaderDati {
                 Sivicolture existingAlbero = sivicoltureRepository.findById(albero.getId()).orElse(null);
                 if (existingAlbero != null) {
                     // Aggiorna i dati solo se l'albero esiste
-                    int prezzo = 1 + random.nextInt(2000);
-                    int superficie = 1 + random.nextInt(10);
+                    int prezzo = 1 + random.nextInt(10000);
+                    int superficie = 1 + random.nextInt(50);
                     int giorniDiCrescita = 41 + random.nextInt(79);
 
                     existingAlbero.setPrezzo(prezzo);

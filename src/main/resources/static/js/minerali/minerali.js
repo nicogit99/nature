@@ -45,6 +45,36 @@ document.addEventListener("DOMContentLoaded", function() {
                 row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
                 row.appendChild(createTableCell(tonnellateGuadagno[index] || 'N/A'));  // Guadagno
 
+                   // Aggiungi un bottone "Cancella"
+                            const deleteButtonCell = document.createElement("td");
+                            const deleteButton = document.createElement("button");
+                            deleteButton.textContent = "Cancella";
+                            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
+
+                            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
+                            deleteButton.addEventListener("click", function () {
+                                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
+                                fetch(`/naturlink/minera/${id}`, {  // Correzione: interpolazione della variabile id
+                                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
+                                    // Non includere 'Content-Type' in questo caso
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+
+                                            row.remove();
+                                            caricaProdotti();
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Errore nella richiesta DELETE:", error);
+                                        alert("Errore nella richiesta.");
+                                    });
+                            });
+
+                            deleteButtonCell.appendChild(deleteButton);
+                            row.appendChild(deleteButtonCell);
+
+
                 tableBody.appendChild(row);
             });
 
@@ -62,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
                  document.getElementById("temperaturaValore").textContent = Meteo[2]+"°C"|| 'N/A';
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 1000);  // Ridotto a 2 secondi per velocizzare il caricamento
+            }, 10000);  // Ridotto a 2 secondi per velocizzare il caricamento
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);

@@ -50,7 +50,7 @@ async function caricaProdotti() {
             // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
             deleteButton.addEventListener("click", function () {
                 // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
-                fetch(`/naturlink/agricolo/${id}`, {  // Correzione: interpolazione della variabile id
+                fetch(`/naturlink/agrico/${id}`, {  // Correzione: interpolazione della variabile id
                     method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
                     // Non includere 'Content-Type' in questo caso
                 })
@@ -98,20 +98,13 @@ async function caricaProdotti() {
         }
     }
 
-    // Funzione per calcolare la somma totale
-    function calcolaSommaTotale(tonnellateGuadagno) {
-        const list1 = tonnellateGuadagno.slice(0, 3);
-        const list2 = tonnellateGuadagno.slice(3, 6);
-        const list3 = tonnellateGuadagno.slice(6, 9);
+     function calcolaSommaTotale(tonnellateGuadagno) {
+          const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+  
+          const sommaTotale = somma(tonnellateGuadagno);
+          return sommaTotale;
+      }
 
-        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
-
-        const sommaList1 = somma(list1);
-        const sommaList2 = somma(list2);
-        const sommaList3 = somma(list3);
-
-        return sommaList1 + sommaList2 + sommaList3;
-    }
 
     // Funzione per formattare i numeri
     function number_format(number, decimals, dec_point, thousands_sep) {
