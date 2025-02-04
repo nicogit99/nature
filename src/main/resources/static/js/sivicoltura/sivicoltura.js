@@ -1,113 +1,95 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
-    async function caricaProdotti() {
-        let loaderVisible = false;
-        try {
-            if (!loaderVisible) {
-                // Mostra i loader circolari prima di caricare i grafici
-                document.getElementById("loaderBarChart").style.display = "block";
-                document.getElementById("loaderPieChart").style.display = "block";
-                document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
-                document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
-                loaderVisible = true;
-            }
+async function caricaProdotti() {
 
-            const response = await fetch("/naturlink/sivicoltura/datatable-framments");
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log(data);
-
-            const tableBody = document.querySelector("#dataTable tbody");
-            tableBody.innerHTML = ""; // Svuotare la tabella
-
-            const { sivicoltura, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
-
-            sivicoltura.forEach((sivicoltura, index) => {
-                const row = document.createElement("tr");
-                const { id,nome, tipo, prezzo, giorniCrescita, superficie } = sivicoltura;
-
-                row.appendChild(createTableCell(nome));  // Nome
-                row.appendChild(createTableCell(tipo));  // Tipo
-                row.appendChild(createTableCell(prezzo + "€")); // Prezzo
-                row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-                row.appendChild(createTableCell(superficie )); // Superficie
-                row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
-                row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
-
-                   // Aggiungi un bottone "Cancella"
-                            const deleteButtonCell = document.createElement("td");
-                            const deleteButton = document.createElement("button");
-                            deleteButton.textContent = "Cancella";
-                            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
-
-                            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
-                            deleteButton.addEventListener("click", function () {
-                                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
-                                fetch(`/naturlink/siv/${id}`, {  // Correzione: interpolazione della variabile id
-                                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
-                                    // Non includere 'Content-Type' in questo caso
-                                })
-                                    .then(response => {
-                                        if (response.ok) {
-
-                                            row.remove();
-                                            caricaProdotti();
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Errore nella richiesta DELETE:", error);
-                                        alert("Errore nella richiesta.");
-                                    });
-                            });
-
-                            deleteButtonCell.appendChild(deleteButton);
-                            row.appendChild(deleteButtonCell);
+    try {
 
 
 
+        const response = await fetch("/naturlink/agricolo/datatable-framments");
 
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-                tableBody.appendChild(row);
+        const data = await response.json();
+        console.log(data);
+
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = ""; // Svuotare la tabella
+
+        const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
+
+        prodotti.forEach((prodotto, index) => {
+            const row = document.createElement("tr");
+            const { id, nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
+
+            row.appendChild(createTableCell(nome));  // Nome
+            row.appendChild(createTableCell(tipo));  // Tipo
+            row.appendChild(createTableCell(prezzo + "€")); // Prezzo
+            row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
+            row.appendChild(createTableCell(superficie)); // Superficie
+            row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
+            row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
+
+            // Aggiungi un bottone "Cancella"
+            const deleteButtonCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Cancella";
+            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
+
+            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
+            deleteButton.addEventListener("click", function () {
+                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
+                fetch(`/naturlink/agrico/${id}`, {  // Correzione: interpolazione della variabile id
+                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
+                    // Non includere 'Content-Type' in questo caso
+                })
+                    .then(response => {
+                        if (response.ok) {
+
+                            row.remove();
+                            caricaProdotti();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Errore nella richiesta DELETE:", error);
+                        alert("Errore nella richiesta.");
+                    });
             });
+
+            deleteButtonCell.appendChild(deleteButton);
+            row.appendChild(deleteButtonCell);
+
+            tableBody.appendChild(row);
+        });
+
 
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
 
-            setTimeout(() => {
-                loaderVisible = false;
-                document.getElementById("loaderBarChart").style.display = "none";
-                document.getElementById("loaderPieChart").style.display = "none";
-                document.getElementById("myBarChart").style.display = "block";
-                document.getElementById("myPieChart").style.display = "block";
-                document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
-                document.getElementById("loaderDataTable").style.display = "none";  // Nascondi il loader della tabella
+           // Nascondi il loader della tabella
                 document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
                 document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
                 document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
                 // Calcola e mostra il sommatotale dopo che i loader sono spariti
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 10000);
+
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
         }
     }
 
-    // Funzione per calcolare la somma totale
-    function calcolaSommaTotale(tonnellateGuadagno) {
-            const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+     function calcolaSommaTotale(tonnellateGuadagno) {
+          const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
 
-            const sommaTotale = somma(tonnellateGuadagno);
-            return sommaTotale;
-        }
+          const sommaTotale = somma(tonnellateGuadagno);
+          return sommaTotale;
+      }
+
 
     // Funzione per formattare i numeri
     function number_format(number, decimals, dec_point, thousands_sep) {
@@ -148,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Foreste Tropicali", "Foreste Temperate", "Foreste Boreali"],
+                labels: ["Frutta", "Verdura", "Ortaggi"],
                 datasets: [{
                     label: "Guadagno",
                     backgroundColor: "#4e73df",
@@ -236,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["Foreste Tropicali", "Foreste Temperate", "Foreste Boreali"],
+                labels: ["frutta", "verdura", "ortaggi"],
                 datasets: [{
                     data: percentualeList,
                     backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc'],
@@ -300,6 +282,6 @@ document.addEventListener("DOMContentLoaded", function() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
-    setInterval(caricaProdotti, 10000);
+    setInterval(caricaProdotti, 5000);
 
 });
