@@ -5,24 +5,16 @@
         <!-- Main Content -->
         <div id="content">
 
-            <!-- Topbar -->
-
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
             <div class="container-fluid">
-                <h1 class="h3  text-center font-weight-bold" style="font-size: 4.5rem; margin-top: 40px;">Sivicoltura</h1>
-                <!-- Page Heading -->
+
                 <div class="row">
 
-                    <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-6 col-md-7 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Guadagno Annuale </div>
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Guadagno Annuale</div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="sommatotale"></div>
                                     </div>
                                     <div class="col-auto">
@@ -33,15 +25,12 @@
                         </div>
                     </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
-
-
                     <div class="col-xl-2 col-md-7 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2 text-center">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Umidità </div>
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Umidità</div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="umiditaValore"></div>
                                     </div>
                                 </div>
@@ -49,7 +38,6 @@
                         </div>
                     </div>
 
-                    <!-- Precipitazioni Card -->
                     <div class="col-xl-2 col-md-7 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
@@ -63,36 +51,24 @@
                         </div>
                     </div>
 
-                    <!-- Temperatura Card -->
                     <div class="col-xl-2 col-md-7 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2 text-center">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Temperatura </div>
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Temperatura</div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="temperaturaValore"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    </div>
-
-
-
-
-                    <!-- Pending Requests Card Example -->
 
                 </div>
 
-
-
-
-                <!-- mettere tutti i grafici-->
                 <div xmlns:th="http://www.thymeleaf.org">
                     <div class="row">
 
-                        <!-- Card per il grafico a barre -->
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -100,9 +76,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-bar position-relative">
-                                        <!-- Loader circolare per il grafico a barre, centrato -->
-                                        <div class="circle-loader" id="loaderBarChart"></div>
-                                        <canvas id="myBarChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
+                                        <canvas id="myBarChart"></canvas>
                                     </div>
                                     <hr>
                                     Guadagno totale per tipologia
@@ -110,7 +84,6 @@
                             </div>
                         </div>
 
-                        <!-- Card per il grafico a torta -->
                         <div class="col-xl-6 col-lg-2">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -118,9 +91,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-pie position-relative">
-                                        <!-- Loader circolare per il grafico a torta, centrato -->
-                                        <div class="circle-loader" id="loaderPieChart"></div>
-                                        <canvas id="myPieChart" style="display: none;"></canvas> <!-- Nascondi il grafico fino al caricamento -->
+                                        <canvas id="myPieChart"></canvas>
                                     </div>
                                     <hr>
                                     Guadagno totale in percentuale
@@ -130,14 +101,11 @@
 
                     </div>
 
-                    <!-- Tabella -->
                     <div class="row">
                         <div class="col-lg-8 col-md-12">
                             <div class="card shadow">
                                 <div class="table-responsive">
-                                    <!-- Loader della tabella -->
-                                    <div class="circle-loader" id="loaderDataTable"></div> <!-- Loader Tabella -->
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="display: none;">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                                         <thead>
                                         <tr>
                                             <th>Nome</th>
@@ -149,15 +117,12 @@
                                             <th>Guadagno Totale</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-
-                                        </tbody>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Form Section placed next to the table -->
                         <div class="col-lg-4 col-md-12">
                             <div class="card shadow">
                                 <div class="card-body">
@@ -194,13 +159,11 @@
 
                 </div>
             </div>
-            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Main Content -->
+
         <script th:src="@{/js/sivicoltura/sivicoltura.js}"></script>
     </div>
 
-    <!-- End of Content Wrapper -->
     <div th:insert="footer"></div>
 </div>

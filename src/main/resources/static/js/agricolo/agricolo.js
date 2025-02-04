@@ -2,18 +2,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
 async function caricaProdotti() {
-    let loaderVisible = false;
+
     try {
-        if (!loaderVisible) {
-            // Mostra i loader circolari prima di caricare i grafici
-            document.getElementById("loaderBarChart").style.display = "block";
-            document.getElementById("loaderPieChart").style.display = "block";
-            document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
-            document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
-            document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
-            document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
-            loaderVisible = true;
-        }
+
+
 
         const response = await fetch("/naturlink/agricolo/datatable-framments");
 
@@ -77,21 +69,14 @@ async function caricaProdotti() {
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
 
-            setTimeout(() => {
-                loaderVisible = false;
-                document.getElementById("loaderBarChart").style.display = "none";
-                document.getElementById("loaderPieChart").style.display = "none";
-                document.getElementById("myBarChart").style.display = "block";
-                document.getElementById("myPieChart").style.display = "block";
-                document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
-                document.getElementById("loaderDataTable").style.display = "none";  // Nascondi il loader della tabella
+           // Nascondi il loader della tabella
                 document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
                 document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
                 document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
                 // Calcola e mostra il sommatotale dopo che i loader sono spariti
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 10000);
+
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -100,7 +85,7 @@ async function caricaProdotti() {
 
      function calcolaSommaTotale(tonnellateGuadagno) {
           const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
-  
+
           const sommaTotale = somma(tonnellateGuadagno);
           return sommaTotale;
       }
@@ -297,6 +282,6 @@ async function caricaProdotti() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
-    setInterval(caricaProdotti, 10000);
+    setInterval(caricaProdotti, 5000);
 
 });

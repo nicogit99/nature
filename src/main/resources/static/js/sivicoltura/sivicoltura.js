@@ -7,7 +7,7 @@ async function caricaProdotti() {
 
 
 
-        const response = await fetch("/naturlink/agricolo/datatable-framments");
+        const response = await fetch("/naturlink/sivicoltura/datatable-framments");
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -19,9 +19,9 @@ async function caricaProdotti() {
         const tableBody = document.querySelector("#dataTable tbody");
         tableBody.innerHTML = ""; // Svuotare la tabella
 
-        const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
+        const { sivicoltura, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
 
-        prodotti.forEach((prodotto, index) => {
+        sivicoltura.forEach((prodotto, index) => {
             const row = document.createElement("tr");
             const { id, nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
 
@@ -42,7 +42,7 @@ async function caricaProdotti() {
             // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
             deleteButton.addEventListener("click", function () {
                 // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
-                fetch(`/naturlink/agrico/${id}`, {  // Correzione: interpolazione della variabile id
+                fetch(`/naturlink/siv/${id}`, {  // Correzione: interpolazione della variabile id
                     method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
                     // Non includere 'Content-Type' in questo caso
                 })
@@ -127,10 +127,12 @@ async function caricaProdotti() {
         sommaTotale = sommaTotale + 50000;
 
         var ctx = document.getElementById("myBarChart");
+
+
         var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Frutta", "Verdura", "Ortaggi"],
+                labels: ["Foreste tropicali", "Foreste Temperate", "Foreste Boreali"],
                 datasets: [{
                     label: "Guadagno",
                     backgroundColor: "#4e73df",
@@ -218,7 +220,7 @@ async function caricaProdotti() {
         window.myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["frutta", "verdura", "ortaggi"],
+                labels: ["Foreste tropicali", "Foreste Temperate", "Foreste Boreali"],
                 datasets: [{
                     data: percentualeList,
                     backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc'],

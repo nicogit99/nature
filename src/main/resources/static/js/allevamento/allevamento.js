@@ -2,19 +2,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
-        let loaderVisible = false;
-        try {
 
-            if (!loaderVisible) {
-                // Mostra i loader circolari prima di caricare i grafici
-                document.getElementById("loaderBarChart").style.display = "block";
-                document.getElementById("loaderPieChart").style.display = "block";
-                document.getElementById("myBarChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("myPieChart").style.display = "none";  // Nascondi il grafico
-                document.getElementById("dataTable").style.display = "none";  // Nascondi la tabella
-                document.getElementById("loaderDataTable").style.display = "block";  // Mostra il loader della tabella
-                loaderVisible = true;
-            }
+        try {
 
             // Fetch dei dati tramite l'API fetch
             const response = await fetch("/naturlink/allevamento/datatable-framments");
@@ -49,17 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
             // Chiamata per aggiornare il grafico a torta
             aggiornaGrafico(tonnellateGuadagno);
 
-            // Timeout per nascondere i loader e mostrare i dati dopo 20 secondi
-            setTimeout(() => {
-                loaderVisible = false;
-                document.getElementById("loaderBarChart").style.display = "none";
-                document.getElementById("loaderPieChart").style.display = "none";
-                document.getElementById("myBarChart").style.display = "block";
-                document.getElementById("myPieChart").style.display = "block";
-                document.getElementById("dataTable").style.display = "table";  // Mostra la tabella
-                document.getElementById("loaderDataTable").style.display = "none";
 
-                // Mostra i valori meteo
+
                 document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
                 document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
                 document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
@@ -67,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Calcola e mostra la somma totale
                 const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
                 document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-            }, 10000);
+
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
@@ -157,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
             data: {
                 labels: ["Bovino", "Suino", "Ovino", "Pollame"],
                 datasets: [{
-                    label: "Revenue",
+                    label: "Guadagno",
                     backgroundColor: "#4e73df",
                     hoverBackgroundColor: "#2e59d9",
                     borderColor: "#4e73df",
@@ -243,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 labels: ["Ovino", "Suino", "Pollame", "Bovino"],
                 datasets: [{
                     data: percentualeList,
-                    backgroundColor: ['#a4e73df', '#1cc88a', '#36b9cc', '#e67e22'],
+                    backgroundColor: ['yellow', '#1cc88a', '#36b9cc', '#e67e22'],
                     hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#e67e22'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
