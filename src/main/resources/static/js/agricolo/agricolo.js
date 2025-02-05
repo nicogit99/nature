@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+   var myBarChart;
+   var myPieChart;
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
@@ -121,7 +123,11 @@ document.addEventListener("DOMContentLoaded", function() {
         sommaTotale = sommaTotale + 50000;
 
         var ctx = document.getElementById("myBarChart");
-        var myBarChart = new Chart(ctx, {
+
+        if(this.myBarChart){
+                myBarPieChar.destroy();
+                }
+        this.myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Frutta", "Verdura", "Ortaggi"],
@@ -209,7 +215,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const percentualeList = percentuale(tonnellateGuadagno);
 
-        window.myPieChart = new Chart(ctx, {
+        if(this.myPieChart){
+        myBarPieChar.destroy();
+        }
+        this.myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["frutta", "verdura", "ortaggi"],
@@ -243,6 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 cutoutPercentage: 80,
             },
         });
+        this.myPieChart.update();
     }
 
     // Funzione per calcolare la percentuale per i grafici
