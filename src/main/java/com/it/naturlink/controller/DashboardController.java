@@ -47,27 +47,27 @@ public class DashboardController {
 
     @GetMapping("/agricolo")
     public ModelAndView agricoloPage() {
-        return new ModelAndView("/agricolo/agricolo");
+        return new ModelAndView("agricolo");
     }
 
     @GetMapping("/allevamento")
     public ModelAndView allevamentoPage() {
-        return new ModelAndView("/allevamento/allevamento");
+        return new ModelAndView("allevamento");
     }
 
     @GetMapping("/pesca")
     public ModelAndView pescaPage() {
-        return new ModelAndView("/pesca/pesca");
+        return new ModelAndView("pesca");
     }
 
     @GetMapping("/sivicoltura")
     public ModelAndView sivicolturaPage() {
-        return new ModelAndView("/sivicoltura/sivicoltura");
+        return new ModelAndView("sivicoltura");
     }
 
     @GetMapping("/minerali")
     public ModelAndView mineraliPage() {
-        return new ModelAndView("/minerali/minerali");
+        return new ModelAndView("minerali");
     }
 
     @GetMapping("agricolo/datatable-framments")

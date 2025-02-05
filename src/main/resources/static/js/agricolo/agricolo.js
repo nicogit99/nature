@@ -1,95 +1,89 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // Funzione per caricare i prodotti e aggiornare la tabella
-async function caricaProdotti() {
+    async function caricaProdotti() {
+        try {
+            const response = await fetch("/naturlink/agricolo/datatable-framments");
 
-    try {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
+            const data = await response.json();
+            console.log(data);
 
+            const tableBody = document.querySelector("#dataTable tbody");
+            tableBody.innerHTML = ""; // Svuotare la tabella
 
-        const response = await fetch("/naturlink/agricolo/datatable-framments");
+            const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+            prodotti.forEach((prodotto, index) => {
+                const row = document.createElement("tr");
+                const { id, nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
 
-        const data = await response.json();
-        console.log(data);
+                row.appendChild(createTableCell(nome));  // Nome
+                row.appendChild(createTableCell(tipo));  // Tipo
+                row.appendChild(createTableCell(prezzo + "€")); // Prezzo
+                row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
+                row.appendChild(createTableCell(superficie)); // Superficie
+                row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
+                row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
 
-        const tableBody = document.querySelector("#dataTable tbody");
-        tableBody.innerHTML = ""; // Svuotare la tabella
+                // Aggiungi un bottone "Cancella"
+                const deleteButtonCell = document.createElement("td");
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Cancella";
+                deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
 
-        const { prodotti, tonnellateList = [], tonnellateGuadagno = [], Meteo = [] } = data;
-
-        prodotti.forEach((prodotto, index) => {
-            const row = document.createElement("tr");
-            const { id, nome, tipo, prezzo, giorniCrescita, superficie } = prodotto;
-
-            row.appendChild(createTableCell(nome));  // Nome
-            row.appendChild(createTableCell(tipo));  // Tipo
-            row.appendChild(createTableCell(prezzo + "€")); // Prezzo
-            row.appendChild(createTableCell(giorniCrescita)); // Giorni di crescita
-            row.appendChild(createTableCell(superficie)); // Superficie
-            row.appendChild(createTableCell(tonnellateList[index] || 'N/A'));  // Tonnellate
-            row.appendChild(createTableCell((tonnellateGuadagno[index] || 0) + "€"));  // Guadagno
-
-            // Aggiungi un bottone "Cancella"
-            const deleteButtonCell = document.createElement("td");
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Cancella";
-            deleteButton.classList.add("btn", "btn-danger");  // Aggiungi classi per styling (Bootstrap)
-
-            // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
-            deleteButton.addEventListener("click", function () {
-                // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
-                fetch(`/naturlink/agrico/${id}`, {  // Correzione: interpolazione della variabile id
-                    method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
-                    // Non includere 'Content-Type' in questo caso
-                })
-                    .then(response => {
-                        if (response.ok) {
-
-                            row.remove();
-                            caricaProdotti();
-                        }
+                // Aggiungi l'evento di click per inviare una richiesta DELETE al backend
+                deleteButton.addEventListener("click", function () {
+                    // Invia la richiesta DELETE all'endpoint Spring Boot senza Content-Type
+                    fetch(`/naturlink/agrico/${id}`, {  // Correzione: interpolazione della variabile id
+                        method: 'DELETE',  // Metodo DELETE per eliminare il prodotto
                     })
-                    .catch(error => {
-                        console.error("Errore nella richiesta DELETE:", error);
-                        alert("Errore nella richiesta.");
-                    });
+                        .then(response => {
+                            if (response.ok) {
+                                row.remove();
+                                caricaProdotti();
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Errore nella richiesta DELETE:", error);
+                            alert("Errore nella richiesta.");
+                        });
+                });
+
+                deleteButtonCell.appendChild(deleteButton);
+                row.appendChild(deleteButtonCell);
+
+                tableBody.appendChild(row);
             });
-
-            deleteButtonCell.appendChild(deleteButton);
-            row.appendChild(deleteButtonCell);
-
-            tableBody.appendChild(row);
-        });
-
 
             // Aggiorna i grafici dopo aver caricato i prodotti
             aggiornaGrafico(tonnellateGuadagno);
 
-           // Nascondi il loader della tabella
-                document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
-                document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
-                document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
-                // Calcola e mostra il sommatotale dopo che i loader sono spariti
-                const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
-                document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
-
+            // Aggiorna i valori meteo e sommatotale
+            aggiornaMeteo(Meteo);
+            const sommaTotale = calcolaSommaTotale(tonnellateGuadagno);
+            document.getElementById("sommatotale").textContent = sommaTotale || 'N/A';
 
         } catch (error) {
             console.error("C'è stato un problema con l'operazione fetch:", error);
         }
     }
 
-     function calcolaSommaTotale(tonnellateGuadagno) {
-          const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+    // Funzione per aggiornare i valori meteo
+    function aggiornaMeteo(Meteo) {
+        document.getElementById("precipitazioniValore").textContent = (Meteo[0] || 'N/A') + "mm";
+        document.getElementById("umiditaValore").textContent = (Meteo[1] || 'N/A') + "%";
+        document.getElementById("temperaturaValore").textContent = (Meteo[2] || 'N/A') + "°C";
+    }
 
-          const sommaTotale = somma(tonnellateGuadagno);
-          return sommaTotale;
-      }
-
+    function calcolaSommaTotale(tonnellateGuadagno) {
+        const somma = (lista) => lista.reduce((acc, val) => acc + (parseFloat(val) || 0), 0);
+        const sommaTotale = somma(tonnellateGuadagno);
+        return sommaTotale;
+    }
 
     // Funzione per formattare i numeri
     function number_format(number, decimals, dec_point, thousands_sep) {
@@ -281,7 +275,7 @@ async function caricaProdotti() {
     // Carica i prodotti inizialmente
     caricaProdotti();
 
-    // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
+    // Imposta un intervallo per aggiornare i prodotti ogni 5 secondi
     setInterval(caricaProdotti, 5000);
 
 });
