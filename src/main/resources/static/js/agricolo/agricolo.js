@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-   var myBarChart;
-   var myPieChart;
+    var myBarChart;
+    var myPieChart;
 
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
@@ -124,10 +124,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var ctx = document.getElementById("myBarChart");
 
-        if(this.myBarChart){
-                myBarPieChar.destroy();
-                }
-        this.myBarChart = new Chart(ctx, {
+        // Distruggi il grafico esistente se presente
+        if (myBarChart) {
+            myBarChart.destroy();
+        }
+
+        // Crea il nuovo grafico a barre
+        myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Frutta", "Verdura", "Ortaggi"],
@@ -215,10 +218,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const percentualeList = percentuale(tonnellateGuadagno);
 
-        if(this.myPieChart){
-        myBarPieChar.destroy();
+        // Distruggi il grafico esistente se presente
+        if (myPieChart) {
+            myPieChart.destroy();
         }
-        this.myPieChart = new Chart(ctx, {
+
+        // Crea il nuovo grafico a torta
+        myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["frutta", "verdura", "ortaggi"],
@@ -252,7 +258,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 cutoutPercentage: 80,
             },
         });
-        this.myPieChart.update();
     }
 
     // Funzione per calcolare la percentuale per i grafici
