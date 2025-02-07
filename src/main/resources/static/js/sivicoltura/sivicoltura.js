@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    var myBarChart;
+    var myPieChart;
     // Funzione per caricare i prodotti e aggiornare la tabella
 async function caricaProdotti() {
 
     try {
-
 
 
         const response = await fetch("/naturlink/sivicoltura/datatable-framments");
@@ -91,29 +91,7 @@ async function caricaProdotti() {
       }
 
 
-    // Funzione per formattare i numeri
-    function number_format(number, decimals, dec_point, thousands_sep) {
-        number = (number + '').replace(',', '').replace(' ', '');
-        let n = !isFinite(+number) ? 0 : +number,
-            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-            s = '',
-            toFixedFix = function(n, prec) {
-                var k = Math.pow(10, prec);
-                return '' + Math.round(n * k) / k;
-            };
 
-        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-        if (s[0].length > 3) {
-            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-        }
-        if ((s[1] || '').length < prec) {
-            s[1] = s[1] || '';
-            s[1] += new Array(prec - s[1].length + 1).join('0');
-        }
-        return s.join(dec);
-    }
 
     // Funzione per creare una cella della tabella
     function createTableCell(content) {
@@ -128,8 +106,11 @@ async function caricaProdotti() {
 
         var ctx = document.getElementById("myBarChart");
 
+           if (myBarChart) {
+           myBarChart.destroy();
+                }
 
-        var myBarChart = new Chart(ctx, {
+       myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Foreste tropicali", "Foreste Temperate", "Foreste Boreali"],
@@ -200,12 +181,6 @@ async function caricaProdotti() {
                     yPadding: 15,
                     displayColors: false,
                     caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem, chart) {
-                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': €' + number_format(tooltipItem.yLabel);
-                        }
-                    }
                 },
             }
         });
@@ -216,8 +191,10 @@ async function caricaProdotti() {
         var ctx = document.getElementById("myPieChart");
 
         const percentualeList = percentuale(tonnellateGuadagno);
-
-        window.myPieChart = new Chart(ctx, {
+         if (myPieChart) {
+          myPieChart.destroy();
+          }
+        myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["Foreste tropicali", "Foreste Temperate", "Foreste Boreali"],
@@ -284,6 +261,6 @@ async function caricaProdotti() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
-    setInterval(caricaProdotti, 5000);
+    setInterval(caricaProdotti, 12000);
 
 });

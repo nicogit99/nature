@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    var myBarChart;
+    var myPieChart;
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
 
@@ -66,28 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return sommaList1 ;
     }
 
-    // Funzione per formattare i numeri
-    function number_format(number, decimals, dec_point, thousands_sep) {
-        number = (number + '').replace(',', '').replace(' ', '');
-        var n = !isFinite(+number) ? 0 : +number,
-            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-            s = '',
-            toFixedFix = function(n, prec) {
-                var k = Math.pow(10, prec);
-                return '' + Math.round(n * k) / k;
-            };
-        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-        if (s[0].length > 3) {
-            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-        }
-        if ((s[1] || '').length < prec) {
-            s[1] = s[1] || '';
-            s[1] += new Array(prec - s[1].length + 1).join('0');
-        }
-        return s.join(dec);
-    }
+
 
     // Funzione per creare una cella della tabella
     function createTableCell(content) {
@@ -132,7 +112,11 @@ document.addEventListener("DOMContentLoaded", function() {
         sommaTotale = sommaTotale + 50000;  // Aggiungi un extra per un margine
 
         var ctx = document.getElementById("myBarChart");
-        var myBarChart = new Chart(ctx, {
+
+           if (myBarChart) {
+                    myBarChart.destroy();
+                }
+        myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Bovino", "Suino", "Ovino", "Pollame"],
@@ -201,11 +185,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     yPadding: 15,
                     displayColors: false,
                     caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return 'Revenue: $' + number_format(tooltipItem.yLabel);
-                        }
-                    }
                 },
             }
         });
@@ -216,8 +195,11 @@ document.addEventListener("DOMContentLoaded", function() {
         var ctx = document.getElementById("myPieChart");
 
         const percentualeList = percentuale(tonnellateGuadagno);
-
-        window.myPieChart = new Chart(ctx, {
+ // Distruggi il grafico esistente se presente
+        if (myPieChart) {
+            myPieChart.destroy();
+        }
+        myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["Ovino", "Suino", "Pollame", "Bovino"],
@@ -257,6 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti e il grafico ogni 20 secondi
-    setInterval(caricaProdotti, 20000);
+    setInterval(caricaProdotti, 12000);
 
 });

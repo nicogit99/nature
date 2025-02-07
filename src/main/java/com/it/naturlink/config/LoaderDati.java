@@ -5,7 +5,6 @@ import com.it.naturlink.db.*;
 import com.it.naturlink.repository.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -373,7 +372,7 @@ public class LoaderDati {
 
 
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 11000)
     public void loadDati() {
         log.info("Inizio reset e caricamento dati");
 

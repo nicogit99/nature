@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    var myBarChart;
+    var myPieChart;
     // Dichiara la variabile loaderVisible
 
     // Funzione per caricare i prodotti e aggiornare la tabella
@@ -148,7 +149,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function aggiornaGraficoChart(sommaList1, sommaList2, sommaList3, sommaTotale) {
         var ctx = document.getElementById("myBarChart");
-        var myBarChart = new Chart(ctx, {
+
+        if (myBarChart) {
+        myBarChart.destroy();
+        }
+         myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Preziosi", "Mediopreziosi", "MenoPreziosi"],
@@ -192,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             maxTicksLimit: 5,
                             padding: 20,
                             callback: function(value) {
-                                return '€' + number_format(value);
+                                return '€' ;
                             }
                         },
                         gridLines: {
@@ -236,7 +241,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const percentualeList = percentuale(tonnellateGuadagno);
 
-        window.myPieChart = new Chart(ctx, {
+ // Distruggi il grafico esistente se presente
+        if (myPieChart) {
+            myPieChart.destroy();
+        }
+        myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["Preziosi", "Mediopreziosi", "MenoPreziosi"],
@@ -273,6 +282,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     caricaProdotti();
-    setInterval(caricaProdotti, 5000);
+    setInterval(caricaProdotti, 12000);
 
 });

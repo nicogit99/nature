@@ -53,7 +53,7 @@ public class Tempo {
     }
 
     // Metodo per aggiornare i valori del tempo
-    @Scheduled(fixedRate = 20000) // Esegui ogni 5 secondi (5000 millisecondi)
+    @Scheduled(fixedRate = 10000) // Esegui ogni 5 secondi (5000 millisecondi)
     public void aggiornaValoriMeteo() {
         setPrecipitazioni(rand.nextInt(601) + 200);  // 200 - 800
         setUmidita(rand.nextInt(41) + 40);  // 40 - 80

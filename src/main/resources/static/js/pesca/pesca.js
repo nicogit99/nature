@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+        var myBarChart;
+        var myPieChart;
     // Funzione per caricare i prodotti e aggiornare la tabella
     async function caricaProdotti() {
 
@@ -68,19 +69,6 @@ document.addEventListener("DOMContentLoaded", function() {
                             deleteButtonCell.appendChild(deleteButton);
                             row.appendChild(deleteButtonCell);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                 tableBody.appendChild(row);
             });
 
@@ -111,30 +99,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //  funzioni
 
-function number_format(number, decimals, dec_point, thousands_sep) {
-  // *     example: number_format(1234.56, 2, ',', ' ');
-  // *     return: '1 234,56'
-  number = (number + '').replace(',', '').replace(' ', '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-    s = '',
-    toFixedFix = function(n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-  }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
-}
 
 
     // Funzione per creare una cella della tabella
@@ -183,7 +147,11 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     sommaTotale=sommaTotale+50000;
 
         var ctx = document.getElementById("myBarChart");
-        var myBarChart = new Chart(ctx, {
+         if (myBarChart) {
+                    myBarChart.destroy();
+                }
+
+         myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Predatori", "Carapaci", "Molluschi"],
@@ -254,13 +222,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                     xPadding: 15,
                     yPadding: 15,
                     displayColors: false,
-                    caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem, chart) {
-                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
-                        }
-                    }
+                    caretPadding: 10
                 },
             }
         });
@@ -277,8 +239,12 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         // Creare una lista con le percentuali
         const percentualeList = percentuale(tonnellateGuadagno);
 
-        // Inizializzare il grafico a torta con i dati
-        window.myPieChart = new Chart(ctx, {
+        if (myPieChart) {
+            myPieChart.destroy();
+               }
+
+
+        myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ["Predatori", "Carapaci", "Molluschi"], // Etichette per ogni categoria
@@ -315,6 +281,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
 
      caricaProdotti();
-     setInterval(caricaProdotti, 5000);
+     setInterval(caricaProdotti, 12000);
 
 });

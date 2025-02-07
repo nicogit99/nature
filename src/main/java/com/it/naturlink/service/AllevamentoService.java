@@ -5,7 +5,6 @@ import com.it.naturlink.naturlink.api.AnimaliApiDelegate;
 import com.it.naturlink.naturlink.model.Animale;
 import com.it.naturlink.repository.AllevamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

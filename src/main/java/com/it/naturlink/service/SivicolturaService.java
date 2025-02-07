@@ -2,8 +2,6 @@ package com.it.naturlink.service;
 
 import com.it.naturlink.db.mapper.MapperAll;
 import com.it.naturlink.naturlink.api.SivicolturaApiDelegate;
-import com.it.naturlink.naturlink.model.Minerale;
-import com.it.naturlink.naturlink.model.Prodotto;
 import com.it.naturlink.naturlink.model.Sivicoltura;
 import com.it.naturlink.repository.SivicoltureRepository;
 import org.springframework.beans.factory.annotation.Autowired;

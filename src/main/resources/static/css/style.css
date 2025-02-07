@@ -1507,7 +1507,8 @@ pre code {
 }
 
 .table-bordered {
-  border: 1px solid #e3e6f0;
+  border: 8px solid #e3e6f0;
+
 }
 
 .table-bordered th,
@@ -10319,7 +10320,7 @@ a:focus {
 
 .sidebar {
   width: 5.5rem;
-  min-height: 200vh;
+  min-height: 120vh;
 }
 
 .sidebar .nav-item {
