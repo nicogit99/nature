@@ -282,6 +282,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     caricaProdotti();
-    setInterval(caricaProdotti, 12000);
+    setInterval(caricaProdotti, 7000);
 
 });

@@ -263,6 +263,6 @@ document.addEventListener("DOMContentLoaded", function() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 5 secondi
-    setInterval(caricaProdotti, 12000);
+    setInterval(caricaProdotti, 7000);
 
 });

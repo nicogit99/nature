@@ -239,6 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti e il grafico ogni 20 secondi
-    setInterval(caricaProdotti, 12000);
+    setInterval(caricaProdotti, 7000);
 
 });

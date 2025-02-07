@@ -372,7 +372,7 @@ public class LoaderDati {
 
 
 
-    @Scheduled(fixedDelay = 11000)
+    @Scheduled(fixedDelay = 6000)
     public void loadDati() {
         log.info("Inizio reset e caricamento dati");
 

@@ -261,6 +261,6 @@ async function caricaProdotti() {
     caricaProdotti();
 
     // Imposta un intervallo per aggiornare i prodotti ogni 20 secondi
-    setInterval(caricaProdotti, 12000);
+    setInterval(caricaProdotti, 7000);
 
 });
