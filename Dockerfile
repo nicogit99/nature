@@ -13,6 +13,8 @@ WORKDIR /app
 # Compila il progetto con Maven
 RUN mvn clean package -DskipTests
 
+# Fase finale: immagine per l'esecuzione
+FROM openjdk:17-jdk-slim
 
 # Copia il file .jar dalla fase di build
 COPY --from=builder /app/target/*.jar /app/app.jar
